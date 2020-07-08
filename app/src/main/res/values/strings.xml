@@ -12,4 +12,8 @@
     <string name="list_tab">List</string>
     <string name="map_tab">Map</string>
     <string name="required_field_error">Required field</string>
+
+    <string name="admin_role_name">Administrator</string>
+    <string name="realtor_role_name">Realtor</string>
+    <string name="customer_role_name">Customer</string>
 </resources>

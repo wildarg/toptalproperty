@@ -11,16 +11,16 @@ interface UserMapper {
 
 class FireStoreUserMapper : UserMapper {
 
-    private fun getRole(type: Int): UserRole = when (type) {
-        0   -> UserRole.Admin
-        1   -> UserRole.Client
+    private fun getRole(type: Long): UserRole = when (type) {
+        0L   -> UserRole.Admin
+        1L   -> UserRole.Client
         else    -> UserRole.Realtor
     }
 
-    private fun getType(role: UserRole): Int = when (role) {
+    private fun getType(role: UserRole): Long = when (role) {
         UserRole.Admin -> 0
         UserRole.Client -> 1
-        UserRole.Realtor -> 3
+        UserRole.Realtor -> 2
     }
 
     override fun fromMap(map: Map<String?, Any?>?): User? = if (map != null) User(
@@ -28,7 +28,7 @@ class FireStoreUserMapper : UserMapper {
         authId = map[FireStoreUserDao.AUTH_ID] as? String ?: "",
         name = map[FireStoreUserDao.NAME] as? String ?: "",
         email = map[FireStoreUserDao.EMAIL] as? String ?: "",
-        role = getRole(map[FireStoreUserDao.TYPE] as? Int ?: 1)
+        role = getRole(map[FireStoreUserDao.TYPE] as? Long ?: 1)
     ) else null
 
     override fun toMap(user: User): HashMap<String, Any> = hashMapOf(

@@ -12,8 +12,10 @@ import com.homesoftwaretools.toptalproperty.core.navigator.Routes
 import com.homesoftwaretools.toptalproperty.core.ui.BaseFragment
 import com.homesoftwaretools.toptalproperty.core.ui.BaseViewModel
 import com.homesoftwaretools.toptalproperty.core.ui.onClick
+import com.homesoftwaretools.toptalproperty.core.utils.ResourceProvider
 import com.homesoftwaretools.toptalproperty.core.utils.Toaster
 import com.homesoftwaretools.toptalproperty.domain.User
+import com.homesoftwaretools.toptalproperty.domain.UserRole
 import org.koin.android.ext.android.getKoin
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.inject
@@ -37,7 +39,7 @@ class UserCard : BaseFragment() {
         signOutButton.onClick { vm.signOut() }
         vm.user.onChange { user ->
             userName.text = user.name
-            userRole.text = user.role.toString()
+            userRole.text = vm.userRoleName(user.role)
             email.text = user.email
         }
     }
@@ -56,6 +58,7 @@ class UserCardViewModel(scopeID: String) : BaseViewModel(scopeID) {
     private val toaster: Toaster by scope.inject()
     private val navigator: Navigator by scope.inject()
     private val useCase: UserCardUseCase by inject()
+    private val rp: ResourceProvider by inject()
 
     val user: LiveData<User>
         get() = userData
@@ -76,6 +79,12 @@ class UserCardViewModel(scopeID: String) : BaseViewModel(scopeID) {
                 onComplete = { navigator.push(Routes.WELCOME) },
                 onError = toaster::showError
             )
+    }
+
+    fun userRoleName(role: UserRole): String = when (role) {
+        UserRole.Admin -> rp.string(R.string.admin_role_name)
+        UserRole.Client -> rp.string(R.string.customer_role_name)
+        UserRole.Realtor -> rp.string(R.string.realtor_role_name)
     }
 
 }
