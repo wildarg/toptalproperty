@@ -1,8 +1,7 @@
 package com.homesoftwaretools.toptalproperty.di
 
-import com.homesoftwaretools.toptalproperty.core.navigator.Navigator
 import com.homesoftwaretools.toptalproperty.core.navigator.AppNavigator
-import com.homesoftwaretools.toptalproperty.core.ui.BaseActivity
+import com.homesoftwaretools.toptalproperty.core.navigator.Navigator
 import com.homesoftwaretools.toptalproperty.core.utils.*
 import com.homesoftwaretools.toptalproperty.features.dashboard.DashboardActivity
 import com.homesoftwaretools.toptalproperty.features.splash.SplashScreen
@@ -13,29 +12,19 @@ import com.homesoftwaretools.toptalproperty.features.usercard.UserCardUseCase
 import com.homesoftwaretools.toptalproperty.features.usercard.UserCardUseCaseImpl
 import com.homesoftwaretools.toptalproperty.features.usercard.UserCardViewModel
 import com.homesoftwaretools.toptalproperty.features.welcome.WelcomeActivity
-import com.homesoftwaretools.toptalproperty.features.welcome.login.LoginViewModel
 import com.homesoftwaretools.toptalproperty.features.welcome.WelcomeViewModel
 import com.homesoftwaretools.toptalproperty.features.welcome.login.LoginUseCase
 import com.homesoftwaretools.toptalproperty.features.welcome.login.LoginUseCaseImpl
+import com.homesoftwaretools.toptalproperty.features.welcome.login.LoginViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val appModule = module {
 
-    scope(named<WelcomeActivity>()) {
-        scoped<Navigator> { AppNavigator(get<WelcomeActivity>()) }
-        scoped<Toaster> { AndroidToaster(get<WelcomeActivity>()) }
-    }
-
-    scope(named<DashboardActivity>()) {
-        scoped<Navigator> { AppNavigator(get<DashboardActivity>()) }
-        scoped<Toaster> { AndroidToaster(get<DashboardActivity>()) }
-    }
-
-    scope(named<SplashScreen>()) {
-        scoped<Navigator> { AppNavigator(get<SplashScreen>()) }
-        scoped<Toaster> { AndroidToaster(get<SplashScreen>()) }
+    scope(named("BaseActivity")) {
+        scoped<Navigator> { AppNavigator(getSource()) }
+        scoped<Toaster> { AndroidToaster(getSource()) }
     }
 
     single<ResourceProvider> { AndroidResourceProvider(get()) }

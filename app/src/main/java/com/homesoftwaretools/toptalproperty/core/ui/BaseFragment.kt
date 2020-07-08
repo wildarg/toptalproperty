@@ -26,7 +26,7 @@ abstract class BaseFragment : Fragment() {
     }
 
     inline fun <reified T : BaseViewModel> BaseFragment.scopedViewModel(): Lazy<T> =
-        viewModel { parametersOf((activity as? BaseActivity)?.lifecycleScope?.id) }
+        viewModel { parametersOf((activity as? BaseActivity)?.baseScope?.id) }
 
     fun <T> LiveData<T>.onChange(listener: (T) -> Unit) = this.observe(viewLifecycleOwner, Observer(listener))
 }

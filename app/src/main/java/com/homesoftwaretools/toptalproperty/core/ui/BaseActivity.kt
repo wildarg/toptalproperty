@@ -13,17 +13,25 @@ import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.homesoftwaretools.toptalproperty.FragmentLifecycleCallback
 import com.homesoftwaretools.toptalproperty.R
+import org.koin.android.ext.android.getKoin
+import org.koin.androidx.scope.bindScope
+import org.koin.core.qualifier.named
+import org.koin.core.scope.Scope
+import org.koin.ext.getScopeId
 
 abstract class BaseActivity : AppCompatActivity() {
 
     private val fragmentLifecycleCallback: FragmentManager.FragmentLifecycleCallbacks by lazy { FragmentLifecycleCallback() }
     abstract fun fragmentBuilder(): Fragment
+    lateinit var baseScope: Scope
 
     open val layoutId: Int = R.layout.main_container
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layoutId)
+        baseScope = getKoin().createScope(getScopeId(), named("BaseActivity"), this)
+        bindScope(baseScope)
         supportFragmentManager.registerFragmentLifecycleCallbacks(fragmentLifecycleCallback, true)
         if (savedInstanceState == null)
             supportFragmentManager
