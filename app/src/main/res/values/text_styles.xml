@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Text">
+    </style>
+
+    <style name="Text.H1">
+        <item name="android:textSize">40sp</item>
+    </style>
+
+    <style name="Text.H2">
+        <item name="android:textSize">32sp</item>
+    </style>
+
+    <style name="Text.H6">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="Text.Label">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="Text.Title1">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Text.SubTitle1">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="Text.Caption">
+        <item name="android:textSize">10sp</item>
+    </style>
+
+</resources>

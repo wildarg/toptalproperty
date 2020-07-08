@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">@color/blue_02</color>
+    <color name="colorPrimaryDark">@color/blue_01</color>
+    <color name="colorAccent">@color/white_01</color>
+
+    <!--
+    100% — FF
+    95% — F2
+    90% — E6
+    85% — D9
+    80% — CC
+    75% — BF
+    70% — B3
+    65% — A6
+    60% — 99
+    55% — 8C
+    50% — 80
+    45% — 73
+    40% — 66
+    35% — 59
+    30% — 4D
+    25% — 40
+    20% — 33
+    15% — 26
+    10% — 1A
+    5% — 0D
+    0% — 00
+    -->
+
+    <color name="blue_01">#132B6C</color>
+    <color name="blue_02">#2B407B</color>
+    <color name="blue_03">#8995B5</color>
+    <color name="blue_01_alpha_10">#1A132B6C</color>
+    <color name="blue_light">#E7EAF0</color>
+    <color name="white_01">#fff</color>
+</resources>

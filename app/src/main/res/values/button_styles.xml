@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Button" parent="Text.Label">
+        <item name="android:layout_height">48dp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="Button.MainCta"/>
+    <style name="Button.SecondCta"/>
+
+    <style name="Button.MainCta.White">
+        <item name="android:background">@drawable/button_main_cta_white</item>
+        <item name="android:textColor"> @color/colorPrimaryDark</item>
+    </style>
+
+    <style name="Button.SecondCta.White">
+        <item name="android:background">@drawable/button_second_cta_white</item>
+        <item name="android:textColor"> @color/colorPrimaryDark</item>
+    </style>
+
+</resources>

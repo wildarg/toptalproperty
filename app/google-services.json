@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "960586636121",
+    "firebase_url": "https://toptalproperty.firebaseio.com",
+    "project_id": "toptalproperty",
+    "storage_bucket": "toptalproperty.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:960586636121:android:a14b7c9a7725ade9318a48",
+        "android_client_info": {
+          "package_name": "com.homesoftwaretools.toptalproperty"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "960586636121-1vvn7k1n14geas0tvle2u775bqh3p6rt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD7hj6_9-r8lUdhfxz6tcQezy3He9MoFIM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "960586636121-1vvn7k1n14geas0tvle2u775bqh3p6rt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
