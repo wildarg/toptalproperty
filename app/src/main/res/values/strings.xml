@@ -11,4 +11,5 @@
     <string name="open_filter_drawer_content_description">Open filter preferences</string>
     <string name="list_tab">List</string>
     <string name="map_tab">Map</string>
+    <string name="required_field_error">Required field</string>
 </resources>
