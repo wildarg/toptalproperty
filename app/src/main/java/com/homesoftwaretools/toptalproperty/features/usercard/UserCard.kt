@@ -16,6 +16,7 @@ import com.homesoftwaretools.toptalproperty.core.utils.ResourceProvider
 import com.homesoftwaretools.toptalproperty.core.utils.Toaster
 import com.homesoftwaretools.toptalproperty.domain.User
 import com.homesoftwaretools.toptalproperty.domain.UserRole
+import com.homesoftwaretools.toptalproperty.repo.googlemap.GoogleGeocodeRepo
 import org.koin.android.ext.android.getKoin
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.inject
@@ -64,6 +65,7 @@ class UserCardViewModel(scopeID: String) : BaseViewModel(scopeID) {
         get() = userData
 
     private val userData = MutableLiveData<User>()
+    private val repo by lazy { GoogleGeocodeRepo() }
 
     init {
         useCase.getCurrentUser()
@@ -74,11 +76,16 @@ class UserCardViewModel(scopeID: String) : BaseViewModel(scopeID) {
     }
 
     fun signOut() {
-        useCase.signOff()
+        repo.decode("Singapore", rp.string(R.string.google_app_id))
             .bindSubscribe(
-                onComplete = { navigator.push(Routes.WELCOME) },
+                onSuccess = {  },
                 onError = toaster::showError
             )
+//        useCase.signOff()
+//            .bindSubscribe(
+//                onComplete = { navigator.push(Routes.WELCOME) },
+//                onError = toaster::showError
+//            )
     }
 
     fun userRoleName(role: UserRole): String = when (role) {

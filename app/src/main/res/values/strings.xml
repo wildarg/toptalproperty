@@ -16,4 +16,6 @@
     <string name="admin_role_name">Administrator</string>
     <string name="realtor_role_name">Realtor</string>
     <string name="customer_role_name">Customer</string>
+
+    <string name="google_map_api_key">AIzaSyAJdWDv-YCFY25ooxgasIf36PabYxz-L-E</string>
 </resources>
