@@ -6,6 +6,7 @@ import io.reactivex.Single
 
 interface ApartmentDao {
     fun getAll(filter: Filter = Filter.EMPTY): Single<List<Apartment>>
+    fun get(id: String): Single<Apartment>
     fun save(apartment: Apartment): Single<Apartment>
     fun delete(apartment: Apartment): Single<Apartment>
 }

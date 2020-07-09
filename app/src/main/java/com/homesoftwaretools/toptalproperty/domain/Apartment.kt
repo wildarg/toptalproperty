@@ -18,14 +18,14 @@ data class Filter(
 }
 
 data class Apartment(
-    val id: String?,
-    val created: Date,
-    val realtorId: String,
+    val id: String? = null,
+    val created: Date? = null,
+    val realtorId: String? = null,
     val name: String,
     val description: String,
     val area: Double,
     val price: Double,
     val rooms: Int,
     val location: Location,
-    val rented: Boolean
+    val rented: Boolean? = null
 )

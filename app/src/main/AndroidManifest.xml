@@ -15,7 +15,7 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_map_api_key" />
-        <activity android:name=".features.splash.SplashScreen">
+        <activity android:name=".features.editor.ApartmentEditorActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

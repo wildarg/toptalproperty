@@ -12,6 +12,17 @@
     <string name="list_tab">List</string>
     <string name="map_tab">Map</string>
     <string name="required_field_error">Required field</string>
+    <string name="apartment_editor_title">Apartment</string>
+
+    <string name="name_label">Name</string>
+    <string name="description_label">Description</string>
+    <string name="area_label">Floor Area</string>
+    <string name="price_label">Price per month</string>
+    <string name="rooms_label">Number of Rooms</string>
+    <string name="address_label">Address</string>
+    <string name="latitude_label">Latitude</string>
+    <string name="longitude_label">Longitude</string>
+    <string name="save_action">Save</string>
 
     <string name="admin_role_name">Administrator</string>
     <string name="realtor_role_name">Realtor</string>

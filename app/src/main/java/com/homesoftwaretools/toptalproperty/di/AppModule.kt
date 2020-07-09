@@ -4,6 +4,9 @@ import com.homesoftwaretools.toptalproperty.core.navigator.AppNavigator
 import com.homesoftwaretools.toptalproperty.core.navigator.Navigator
 import com.homesoftwaretools.toptalproperty.core.utils.*
 import com.homesoftwaretools.toptalproperty.features.dashboard.DashboardActivity
+import com.homesoftwaretools.toptalproperty.features.editor.ApartmentEditorUseCase
+import com.homesoftwaretools.toptalproperty.features.editor.ApartmentEditorUseCaseImpl
+import com.homesoftwaretools.toptalproperty.features.editor.ApartmentEditorViewModel
 import com.homesoftwaretools.toptalproperty.features.splash.SplashScreen
 import com.homesoftwaretools.toptalproperty.features.splash.SplashUseCase
 import com.homesoftwaretools.toptalproperty.features.splash.SplashUseCaseImpl
@@ -33,14 +36,17 @@ val appModule = module {
     viewModel { (id: String) -> LoginViewModel(id) }
     viewModel { (id: String) -> SplashViewModel(id) }
     viewModel { (id: String) -> UserCardViewModel(id) }
+    viewModel { (id: String) -> ApartmentEditorViewModel(id) }
 }
 
 val useCases = module {
     factory<LoginUseCase> { LoginUseCaseImpl() }
     factory<SplashUseCase> { SplashUseCaseImpl(authRepo = get(), userRepo = get()) }
     factory<UserCardUseCase> { UserCardUseCaseImpl(authRepo = get(), userRepo = get()) }
+    factory<ApartmentEditorUseCase> { ApartmentEditorUseCaseImpl(apartmentRepo = get(), userRepo = get()) }
 }
 
 val utils = module {
-    factory<DateProvider> { DateProviderImpl() }
+    single<DateProvider> { DateProviderImpl() }
+    single<NumberFormatter> { NumberFormatterImpl() }
 }

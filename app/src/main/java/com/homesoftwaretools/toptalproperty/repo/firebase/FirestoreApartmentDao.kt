@@ -55,6 +55,18 @@ class FireStoreApartmentDao(
             .addOnFailureListener(s::onError)
     }
 
+    override fun get(id: String): Single<Apartment> = Single.create { s ->
+        collection.document(id)
+            .get()
+            .addOnSuccessListener { snapshot ->
+                snapshot
+                    ?.let(this::toApartment)
+                    ?.let(s::onSuccess)
+                    ?: s.onError(ApartmentNotFoundException(id))
+            }
+            .addOnFailureListener(s::onError)
+    }
+
     override fun delete(apartment: Apartment): Single<Apartment> = Single.create { s ->
         apartment.id?.let { id ->
             collection.document(id).delete()

@@ -32,22 +32,26 @@ class FireStoreApartmentMapper(
             description = data[FireStoreApartmentDao.DESCRIPTION] as? String ?: "",
             area = data[FireStoreApartmentDao.AREA] as? Double ?: 0.0,
             price = data[FireStoreApartmentDao.PRICE] as? Double ?: 0.0,
-            rooms = data[FireStoreApartmentDao.ROOMS] as? Int ?: 0,
+            rooms = (data[FireStoreApartmentDao.ROOMS] as? Long)?.toInt() ?: 0,
             location = getLocation(data[FireStoreApartmentDao.LOCATION] as? GeoPoint),
             rented = data[FireStoreApartmentDao.RENTED] as? Boolean ?: false
         )
     }
 
-    override fun toMap(apartment: Apartment): Map<String, Any> = hashMapOf(
-        FireStoreApartmentDao.CREATED to dt.toMs(apartment.created),
-        FireStoreApartmentDao.REALTOR_ID to apartment.realtorId,
-        FireStoreApartmentDao.NAME to apartment.name,
-        FireStoreApartmentDao.DESCRIPTION to apartment.description,
-        FireStoreApartmentDao.AREA to apartment.area,
-        FireStoreApartmentDao.PRICE to apartment.price,
-        FireStoreApartmentDao.ROOMS to apartment.rooms,
-        FireStoreApartmentDao.LOCATION to getGeoPoint(apartment.location),
-        FireStoreApartmentDao.RENTED to apartment.rented
-    )
+    override fun toMap(apartment: Apartment): Map<String, Any> {
+        val map = hashMapOf(
+            FireStoreApartmentDao.NAME to apartment.name,
+            FireStoreApartmentDao.DESCRIPTION to apartment.description,
+            FireStoreApartmentDao.AREA to apartment.area,
+            FireStoreApartmentDao.PRICE to apartment.price,
+            FireStoreApartmentDao.ROOMS to apartment.rooms,
+            FireStoreApartmentDao.LOCATION to getGeoPoint(apartment.location)
+        )
+
+        if (apartment.created != null) map[FireStoreApartmentDao.CREATED] = dt.toMs(apartment.created)
+        if (apartment.realtorId != null) map[FireStoreApartmentDao.REALTOR_ID] = apartment.realtorId
+        if (apartment.rented != null) map[FireStoreApartmentDao.RENTED] = apartment.rented
+        return map
+    }
 
 }
