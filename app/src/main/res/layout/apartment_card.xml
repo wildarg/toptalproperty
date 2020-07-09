@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:contentPadding="16dp"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="@tools:sample/full_names"
+            style="@style/Text.Label.NoCaps"
+            android:textColor="@color/blue_01"
+            />
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            tools:text="@tools:sample/lorem/random"
+            tools:maxLines="2"
+            style="@style/Text.Body1"
+            android:textColor="@color/blue_01"
+            />
+
+        <TextView
+            android:id="@+id/area"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:drawableStart="@drawable/ic_square_24px"
+            android:drawablePadding="8dp"
+            android:gravity="center_vertical"
+            tools:text="@tools:sample/us_zipcodes"
+            tools:maxLines="2"
+            style="@style/Text.Body2"
+            android:textColor="@color/blue_01"
+            />
+
+        <TextView
+            android:id="@+id/rooms"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:drawableStart="@drawable/ic_bedroom_24px"
+            android:drawablePadding="8dp"
+            android:gravity="center_vertical"
+            tools:text="@tools:sample/us_zipcodes"
+            tools:maxLines="2"
+            style="@style/Text.Body2"
+            android:textColor="@color/blue_01"
+            />
+
+        <TextView
+            android:id="@+id/price"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:drawableStart="@drawable/ic_price_24px"
+            android:drawablePadding="8dp"
+            android:gravity="center_vertical"
+            tools:text="@tools:sample/us_zipcodes"
+            tools:maxLines="2"
+            style="@style/Text.Body2"
+            android:textColor="@color/blue_01"
+            />
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

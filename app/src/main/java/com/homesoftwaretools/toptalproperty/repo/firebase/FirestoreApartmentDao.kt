@@ -9,6 +9,7 @@ import com.homesoftwaretools.toptalproperty.domain.Apartment
 import com.homesoftwaretools.toptalproperty.domain.Filter
 import com.homesoftwaretools.toptalproperty.repo.dao.ApartmentDao
 import com.homesoftwaretools.toptalproperty.repo.dao.ApartmentNotFoundException
+import io.reactivex.Observable
 import io.reactivex.Single
 
 class FireStoreApartmentDao(
@@ -28,18 +29,17 @@ class FireStoreApartmentDao(
         return max?.let { query.whereLessThanOrEqualTo(field, it) } ?: query
     }
 
-    override fun getAll(filter: Filter): Single<List<Apartment>> = Single.create { s ->
+    override fun getAll(filter: Filter): Observable<List<Apartment>> = Observable.create { o ->
         collection
             .inRange(AREA, filter.minArea, filter.maxArea)
             .inRange(PRICE, filter.minPrice, filter.maxPrice)
             .inRange(ROOMS, filter.minRooms, filter.maxRooms)
-            .get()
-            .addOnSuccessListener { snapshot ->
-                val list = snapshot.documents
-                    .mapNotNull(this::toApartment)
-                s.onSuccess(list)
+            .addSnapshotListener { snapshot, e ->
+                when {
+                    e != null        -> o.onError(e)
+                    snapshot != null -> o.onNext(snapshot.documents.mapNotNull(this::toApartment))
+                }
             }
-            .addOnFailureListener(s::onError)
     }
 
     override fun save(apartment: Apartment): Single<Apartment> = Single.create { s ->

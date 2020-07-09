@@ -3,6 +3,7 @@ package com.homesoftwaretools.toptalproperty.core.ui
 import androidx.lifecycle.ViewModel
 import io.reactivex.Completable
 import io.reactivex.Maybe
+import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import org.koin.core.KoinComponent
@@ -35,6 +36,14 @@ abstract class BaseViewModel(private val scopeID: ScopeID) : ViewModel(), KoinCo
         onError: (e: Throwable) -> Unit
     ) {
         subscribe(onSuccess, onError, onComplete).let { disposable.add(it) }
+    }
+
+    fun <T : Any> Observable<T>.bindSubscribe(
+        onNext: (t: T) -> Unit,
+        onComplete: () -> Unit = {},
+        onError: (e: Throwable) -> Unit
+    ) {
+        subscribe(onNext, onError, onComplete).let { disposable.add(it) }
     }
 
     override fun onCleared() {
