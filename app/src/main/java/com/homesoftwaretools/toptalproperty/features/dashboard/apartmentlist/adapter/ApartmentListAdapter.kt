@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.card.MaterialCardView
 import com.homesoftwaretools.toptalproperty.R
 import com.homesoftwaretools.toptalproperty.core.utils.NumberFormatter
 import com.homesoftwaretools.toptalproperty.domain.Apartment
@@ -13,9 +14,10 @@ import com.homesoftwaretools.toptalproperty.domain.Apartment
 class ApartmentListAdapter(
     context: Context,
     private val fmt: NumberFormatter,
-    private var data: List<Apartment> = emptyList()
+    private val onClick: (String) -> Unit
 ) : RecyclerView.Adapter<ApartmentViewHolder>() {
 
+    private var data: List<Apartment> = emptyList()
     private val inflater = LayoutInflater.from(context)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ApartmentViewHolder {
@@ -38,12 +40,14 @@ class ApartmentListAdapter(
 
     override fun onBindViewHolder(holder: ApartmentViewHolder, position: Int) {
         holder.populate(data[position])
+        holder.setOnClickListener { onClick(data[position].id!!) }
     }
 
 }
 
 class ApartmentViewHolder(private val view: View, private val fmt: NumberFormatter) : RecyclerView.ViewHolder(view) {
 
+    private val card by lazy { view.findViewById<MaterialCardView>(R.id.card) }
     private val name by lazy { view.findViewById<TextView>(R.id.name) }
     private val description by lazy { view.findViewById<TextView>(R.id.description) }
     private val area by lazy { view.findViewById<TextView>(R.id.area) }
@@ -56,6 +60,10 @@ class ApartmentViewHolder(private val view: View, private val fmt: NumberFormatt
         area.text = fmt.formatNum(apartment.area)
         rooms.text = fmt.formatInt(apartment.rooms)
         price.text = fmt.formatNum(apartment.price)
+    }
+
+    fun setOnClickListener(listener: (View) -> Unit) {
+        card.setOnClickListener(listener)
     }
 
 }

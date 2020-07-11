@@ -6,5 +6,6 @@ interface Routes {
         const val LOG_IN = "/login"
         const val SIGN_UP = "/signup"
         const val DASHBOARD = "/dashboard"
+        const val APARTMENT_EDITOR = "/apartment_editor"
     }
 }

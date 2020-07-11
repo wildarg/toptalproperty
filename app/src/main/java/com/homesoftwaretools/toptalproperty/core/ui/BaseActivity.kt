@@ -49,6 +49,10 @@ abstract class BaseActivity : AppCompatActivity() {
         supportFragmentManager.unregisterFragmentLifecycleCallbacks(fragmentLifecycleCallback)
     }
 
+    fun args(name: String): String? {
+        return intent.getStringExtra(name)
+    }
+
 }
 
 abstract class BaseScaffoldActivity : BaseActivity() {

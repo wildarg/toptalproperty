@@ -23,6 +23,7 @@
     <string name="latitude_label">Latitude</string>
     <string name="longitude_label">Longitude</string>
     <string name="save_action">Save</string>
+    <string name="save_successful_toast">Saved successfully</string>
 
     <string name="admin_role_name">Administrator</string>
     <string name="realtor_role_name">Realtor</string>

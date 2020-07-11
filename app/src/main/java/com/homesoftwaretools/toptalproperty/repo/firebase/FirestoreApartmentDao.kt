@@ -34,6 +34,7 @@ class FireStoreApartmentDao(
             .inRange(AREA, filter.minArea, filter.maxArea)
             .inRange(PRICE, filter.minPrice, filter.maxPrice)
             .inRange(ROOMS, filter.minRooms, filter.maxRooms)
+            .orderBy(CREATED)
             .addSnapshotListener { snapshot, e ->
                 when {
                     e != null        -> o.onError(e)
@@ -44,7 +45,7 @@ class FireStoreApartmentDao(
 
     override fun save(apartment: Apartment): Single<Apartment> = Single.create { s ->
         val data = mapper.toMap(apartment)
-        val task: Task<*> = apartment.id?.let { id -> collection.document(id).set(data) }
+        val task: Task<*> = apartment.id?.let { id -> collection.document(id).update(data) }
             ?: collection.add(data)
         task.addOnSuccessListener {
             if (it is DocumentReference?)

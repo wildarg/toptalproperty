@@ -2,6 +2,7 @@ package com.homesoftwaretools.toptalproperty.features.editor
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -50,6 +51,7 @@ class ApartmentEditorScreen : BaseFragment() {
     private val fmt: NumberFormatter by inject()
     private val rp: ResourceProvider by inject()
     private val vm: ApartmentEditorViewModel by scopedViewModel()
+    private var id: String? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -59,12 +61,14 @@ class ApartmentEditorScreen : BaseFragment() {
         saveButton.setOnClickListener(this::onSaveClick)
         vm.apartment.onChange(this::populate)
 
-        vm.loadApartment("qG8dFiJ6BzIvgLHItyYu")
+        id = args("id")
+        if (id != null)
+            vm.loadApartment(id!!)
     }
 
     private fun onSaveClick(v: View) {
         if (checkForm())
-            vm.saveApartment(collectData())
+            vm.saveApartment(collectData(), id)
     }
 
     private fun initView(v: View) {
@@ -132,6 +136,7 @@ class ApartmentEditorViewModel(scopeId: String) : BaseViewModel(scopeId) {
     private val toaster: Toaster by scope.inject()
     private val navigator: Navigator by scope.inject()
     private val useCase: ApartmentEditorUseCase by inject()
+    private val rp: ResourceProvider by inject()
 
     val apartment: LiveData<Apartment> = MutableLiveData()
 
@@ -145,12 +150,15 @@ class ApartmentEditorViewModel(scopeId: String) : BaseViewModel(scopeId) {
             )
     }
 
-    fun saveApartment(data: Apartment) {
-        useCase.save(data)
+    fun saveApartment(data: Apartment, id: String? = null) {
+        useCase.save(data.let { if (id != null) it.copy(id = id) else it })
             .doOnSubscribe { navigator.pushLoader() }
             .doFinally { navigator.hideLoader() }
             .bindSubscribe(
-                onSuccess = { logd { "OK" } },
+                onSuccess = {
+                    toaster.toast(rp.string(R.string.save_successful_toast))
+                    navigator.popBack()
+                },
                 onError = toaster::showError
             )
     }

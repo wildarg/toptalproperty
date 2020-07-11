@@ -22,7 +22,7 @@ class ApartmentRepoImpl(
 
     override fun save(apartment: Apartment, realtor: User): Single<Apartment> {
         return apartment
-            .let { if (it.created == null) it.copy(created = dt.now()) else it }
+            .let { if (it.created == null && it.id == null) it.copy(created = dt.now()) else it }
             .let {
                 if (it.realtorId != null && it.realtorId != realtor.authId)
                     return Single.error(Exception("Wrong user"))

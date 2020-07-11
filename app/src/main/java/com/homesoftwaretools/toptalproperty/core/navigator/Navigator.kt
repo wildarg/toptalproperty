@@ -8,6 +8,7 @@ import com.homesoftwaretools.toptalproperty.R
 import com.homesoftwaretools.toptalproperty.core.ui.BaseActivity
 import com.homesoftwaretools.toptalproperty.core.ui.LoaderScreen
 import com.homesoftwaretools.toptalproperty.features.dashboard.DashboardActivity
+import com.homesoftwaretools.toptalproperty.features.editor.ApartmentEditorActivity
 import com.homesoftwaretools.toptalproperty.features.welcome.WelcomeActivity
 import com.homesoftwaretools.toptalproperty.features.welcome.login.LoginFragment
 import com.homesoftwaretools.toptalproperty.logd
@@ -16,7 +17,8 @@ import kotlin.reflect.KClass
 
 interface Navigator {
     fun push(target: Fragment, replace: Boolean = true, stack: String = "")
-    fun push(name: String)
+    fun push(name: String, args: Map<String, String> = emptyMap())
+    fun popBack()
     fun pushLoader()
     fun hideLoader()
 }
@@ -31,7 +33,8 @@ class AppNavigator(private val context: Context) : Navigator {
         mapOf(
             Routes.WELCOME to ActivityRoute(WelcomeActivity::class, clearStack = true),
             Routes.LOG_IN to FragmentRoute { LoginFragment() },
-            Routes.DASHBOARD to ActivityRoute(DashboardActivity::class, clearStack = true)
+            Routes.DASHBOARD to ActivityRoute(DashboardActivity::class, clearStack = true),
+            Routes.APARTMENT_EDITOR to ActivityRoute(ApartmentEditorActivity::class)
         )
     }
 
@@ -43,8 +46,12 @@ class AppNavigator(private val context: Context) : Navigator {
             .commit()
     }
 
-    private fun startActivity(route: ActivityRoute) {
+    private fun startActivity(
+        route: ActivityRoute,
+        args: Map<String, String>
+    ) {
         val intent = Intent(context, route.activityClass.java)
+        args.entries.forEach { (key, value) -> intent.putExtra(key, value) }
         if (route.clearStack)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP + Intent.FLAG_ACTIVITY_NEW_TASK)
         context.startActivity(intent)
@@ -52,12 +59,16 @@ class AppNavigator(private val context: Context) : Navigator {
             (context as? BaseActivity)?.finish()
     }
 
-    override fun push(name: String) {
+    override fun push(name: String, args: Map<String, String>) {
         when (val route = routes[name.toLowerCase(Locale.getDefault())]) {
             is FragmentRoute -> push(target = route.builder())
-            is ActivityRoute -> startActivity(route)
+            is ActivityRoute -> startActivity(route, args)
             else -> logd { "Unknown route $name" }
         }
+    }
+
+    override fun popBack() {
+        (context as? BaseActivity)?.finish()
     }
 
     override fun pushLoader() {
