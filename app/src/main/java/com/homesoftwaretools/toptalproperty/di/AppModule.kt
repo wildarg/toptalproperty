@@ -50,5 +50,5 @@ val useCases = module {
 
 val utils = module {
     single<DateProvider> { DateProviderImpl() }
-    single<NumberFormatter> { NumberFormatterImpl() }
+    single<NumberFormatter> { NumberFormatterImpl(rp = get()) }
 }

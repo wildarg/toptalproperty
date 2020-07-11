@@ -57,9 +57,9 @@ class ApartmentViewHolder(private val view: View, private val fmt: NumberFormatt
     fun populate(apartment: Apartment) {
         name.text = apartment.name
         description.text = apartment.description
-        area.text = fmt.formatNum(apartment.area)
-        rooms.text = fmt.formatInt(apartment.rooms)
-        price.text = fmt.formatNum(apartment.price)
+        area.text = fmt.formatArea(apartment.area)
+        rooms.text = fmt.formatRooms(apartment.rooms)
+        price.text = fmt.formatCurrency(apartment.price)
     }
 
     fun setOnClickListener(listener: (View) -> Unit) {

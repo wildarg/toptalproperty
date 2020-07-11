@@ -96,7 +96,7 @@ class ApartmentEditorScreen : BaseFragment() {
         descriptionEditor.setText(apartment.description)
         areaEditor.setText(fmt.formatNum(apartment.area))
         roomEditor.setText(fmt.formatInt(apartment.rooms))
-        priceEditor.setText(fmt.formatCurrency(apartment.price))
+        priceEditor.setText(fmt.formatNum(apartment.price))
         latitudeEditor.setText(fmt.formatNum(apartment.location.latitude))
         longitudeEditor.setText(fmt.formatNum(apartment.location.longitude))
     }

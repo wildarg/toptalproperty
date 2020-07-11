@@ -30,9 +30,9 @@ class FireStoreApartmentMapper(
             realtorId = data[FireStoreApartmentDao.REALTOR_ID] as? String ?: "",
             name = data[FireStoreApartmentDao.NAME] as? String ?: "",
             description = data[FireStoreApartmentDao.DESCRIPTION] as? String ?: "",
-            area = data[FireStoreApartmentDao.AREA] as? Double ?: 0.0,
-            price = data[FireStoreApartmentDao.PRICE] as? Double ?: 0.0,
-            rooms = (data[FireStoreApartmentDao.ROOMS] as? Long)?.toInt() ?: 0,
+            area = (data[FireStoreApartmentDao.AREA] as? Number)?.toDouble() ?: 0.0,
+            price = (data[FireStoreApartmentDao.PRICE] as? Number)?.toDouble() ?: 0.0,
+            rooms = (data[FireStoreApartmentDao.ROOMS] as? Number)?.toInt() ?: 0,
             location = getLocation(data[FireStoreApartmentDao.LOCATION] as? GeoPoint),
             rented = data[FireStoreApartmentDao.RENTED] as? Boolean ?: false
         )

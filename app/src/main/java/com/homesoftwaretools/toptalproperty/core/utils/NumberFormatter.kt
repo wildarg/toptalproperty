@@ -1,18 +1,21 @@
 package com.homesoftwaretools.toptalproperty.core.utils
 
+import com.homesoftwaretools.toptalproperty.R
 import java.text.NumberFormat
 import java.util.*
 
 interface NumberFormatter {
     fun formatNum(num: Double): String
     fun formatInt(num: Int): String
+    fun formatArea(num: Double): String
+    fun formatRooms(num: Int): String
     fun formatCurrency(num: Double): String
     fun parseNum(src: String?): Double
     fun parseInt(src: String?): Int
 }
 
 
-class NumberFormatterImpl : NumberFormatter {
+class NumberFormatterImpl(private val rp: ResourceProvider) : NumberFormatter {
 
     private val formatter: NumberFormat by lazy { NumberFormat.getNumberInstance(Locale.getDefault()) }
 
@@ -24,8 +27,16 @@ class NumberFormatterImpl : NumberFormatter {
         return formatter.format(num)
     }
 
+    override fun formatArea(num: Double): String {
+        return rp.string(R.string.area_format_string).format(formatNum(num))
+    }
+
+    override fun formatRooms(num: Int): String {
+        return rp.string(R.string.rooms_format_string).format(formatInt(num))
+    }
+
     override fun formatCurrency(num: Double): String {
-        return formatter.format(num)
+        return rp.string(R.string.price_format_string).format(formatNum(num))
     }
 
     override fun parseNum(src: String?): Double {

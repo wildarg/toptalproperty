@@ -16,8 +16,8 @@
 
     <string name="name_label">Name</string>
     <string name="description_label">Description</string>
-    <string name="area_label">Floor Area</string>
-    <string name="price_label">Price per month</string>
+    <string name="area_label">Floor Area (sqft)</string>
+    <string name="price_label">Price per month (SGD)</string>
     <string name="rooms_label">Number of Rooms</string>
     <string name="address_label">Address</string>
     <string name="latitude_label">Latitude</string>
@@ -28,6 +28,10 @@
     <string name="admin_role_name">Administrator</string>
     <string name="realtor_role_name">Realtor</string>
     <string name="customer_role_name">Customer</string>
+
+    <string name="area_format_string">%s sqft</string>
+    <string name="rooms_format_string">%s BDR</string>
+    <string name="price_format_string">$%s SGD</string>
 
     <string name="google_map_api_key">AIzaSyAJdWDv-YCFY25ooxgasIf36PabYxz-L-E</string>
 </resources>
