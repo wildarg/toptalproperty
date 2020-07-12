@@ -5,12 +5,21 @@
     android:maxWidth="200dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    app:contentPadding="16dp">
+    >
+
+    <ImageView
+        android:id="@+id/rented_band"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:src="@drawable/ic_rented_band_13"
+        android:layout_gravity="end|top"
+        android:visibility="gone"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_margin="16dp">
 
         <TextView
             android:id="@+id/title"

@@ -122,7 +122,7 @@ class ApartmentMapScreen : BaseFragment(), OnMapReadyCallback {
             fmt.formatNum(apartment.area),
             fmt.formatInt(apartment.rooms),
             fmt.formatNum(apartment.price)
-        ).let { if (apartment.rented == true) rp.string(R.string.rented_label) + "\n" + it else it }
+        )
     }
 
     private val markers = HashMap<String, Marker>()
@@ -135,7 +135,10 @@ class ApartmentMapScreen : BaseFragment(), OnMapReadyCallback {
             .icon(BitmapDescriptorFactory.fromResource(
                 if (apartment.rented == true) R.drawable.ic_rented_house_24px else R.drawable.ic_house_24px
             ))
-        map?.addMarker(marker)?.let { markers[apartment.id!!] = it }
+        map?.addMarker(marker)?.let {
+            markers[apartment.id!!] = it
+            it.tag = apartment
+        }
     }
 
     private fun Location.toLatLng(): LatLng = LatLng(this.latitude, this.longitude)

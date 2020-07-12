@@ -71,6 +71,7 @@ class ApartmentListViewModel(scopeId: String) : BaseViewModel(scopeId) {
     }
 
     fun openMap(apartment: Apartment) {
+        navigator.hideFab()
         navigator.push(Routes.APARTMENT_MAP, mapOf("id" to apartment.id!!), cached = true)
     }
 

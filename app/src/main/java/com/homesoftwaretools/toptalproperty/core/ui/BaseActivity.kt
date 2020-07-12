@@ -105,11 +105,11 @@ abstract class BaseScaffoldActivity : BaseActivity() {
         return true
     }
 
-    protected fun hideFab() {
+    fun hideFab() {
         fab.visible = false
     }
 
-    protected fun showFab() {
+    fun showFab() {
         fab.visible = true
     }
 }

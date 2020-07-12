@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.homesoftwaretools.toptalproperty.R
 import com.homesoftwaretools.toptalproperty.core.ui.BaseActivity
+import com.homesoftwaretools.toptalproperty.core.ui.BaseScaffoldActivity
 import com.homesoftwaretools.toptalproperty.core.ui.LoaderScreen
 import com.homesoftwaretools.toptalproperty.features.dashboard.DashboardActivity
 import com.homesoftwaretools.toptalproperty.features.dashboard.apartmentlist.ApartmentListScreen
@@ -20,11 +21,13 @@ import kotlin.collections.HashMap
 import kotlin.reflect.KClass
 
 interface Navigator {
-    fun push(target: Fragment, replace: Boolean = true, stack: String = "", args: Map<String, String> = emptyMap())
+    fun push(target: Fragment, replace: Boolean = true, stack: String? = "", args: Map<String, String> = emptyMap())
     fun push(name: String, args: Map<String, String> = emptyMap(), cached: Boolean = false)
     fun popBack()
     fun pushLoader()
     fun hideLoader()
+    fun showFab()
+    fun hideFab()
 }
 
 class AppNavigator(private val context: Context) : Navigator {
@@ -37,8 +40,8 @@ class AppNavigator(private val context: Context) : Navigator {
             Routes.LOG_IN to FragmentRoute { LoginFragment() },
             Routes.DASHBOARD to ActivityRoute(DashboardActivity::class, clearStack = true),
             Routes.APARTMENT_EDITOR to ActivityRoute(ApartmentEditorActivity::class),
-            Routes.APARTMENT_LIST to FragmentRoute { ApartmentListScreen() },
-            Routes.APARTMENT_MAP to FragmentRoute { ApartmentMapScreen() }
+            Routes.APARTMENT_LIST to FragmentRoute(null) { ApartmentListScreen() },
+            Routes.APARTMENT_MAP to FragmentRoute(null) { ApartmentMapScreen() }
         )
     }
 
@@ -47,12 +50,12 @@ class AppNavigator(private val context: Context) : Navigator {
             .apply { args.entries.forEach { (key, vaue) -> putString(key, vaue) } }
     }
 
-    override fun push(target: Fragment, replace: Boolean, stack: String, args: Map<String, String>) {
+    override fun push(target: Fragment, replace: Boolean, stack: String?, args: Map<String, String>) {
         val mgr = (context as? BaseActivity)?.supportFragmentManager ?: return
         target.arguments = toBundle(args)
         mgr.beginTransaction()
             .apply { if (replace) this.replace(R.id.container, target) else this.add(R.id.container, target) }
-            .addToBackStack(stack)
+            .apply { if (stack != null) addToBackStack(stack) }
             .commit()
     }
 
@@ -80,7 +83,7 @@ class AppNavigator(private val context: Context) : Navigator {
 
     override fun push(name: String, args: Map<String, String>, cached: Boolean) {
         when (val route = routes[name.toLowerCase(Locale.getDefault())]) {
-            is FragmentRoute -> push(target = getFragment(name, route, cached), args = args)
+            is FragmentRoute -> push(target = getFragment(name, route, cached), args = args, stack = route.stack)
             is ActivityRoute -> startActivity(route, args)
             else -> logd { "Unknown route $name" }
         }
@@ -98,11 +101,19 @@ class AppNavigator(private val context: Context) : Navigator {
         val mgr = (context as? BaseActivity)?.supportFragmentManager ?: return
         mgr.popBackStack("loader", FragmentManager.POP_BACK_STACK_INCLUSIVE)
     }
+
+    override fun showFab() {
+        (context as? BaseScaffoldActivity)?.showFab()
+    }
+
+    override fun hideFab() {
+        (context as? BaseScaffoldActivity)?.hideFab()
+    }
 }
 
 sealed class Route
 
-data class FragmentRoute(val builder: () -> Fragment) : Route()
+data class FragmentRoute(val stack: String? = "", val builder: () -> Fragment) : Route()
 data class ActivityRoute(
     val activityClass: KClass<*>,
     val clearStack: Boolean = false
