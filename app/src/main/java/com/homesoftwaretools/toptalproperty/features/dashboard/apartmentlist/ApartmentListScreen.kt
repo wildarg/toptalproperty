@@ -32,7 +32,11 @@ class ApartmentListScreen : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView(view)
-        adapter = ApartmentListAdapter(view.context, fmt, rp, onClick = vm::openApartment)
+        adapter = ApartmentListAdapter(
+            view.context, fmt, rp,
+            onClick = vm::openApartment,
+            onMapClick = vm::openMap
+        )
         recycler.adapter = adapter
         vm.data.onChange(adapter::swapData)
     }
@@ -64,6 +68,10 @@ class ApartmentListViewModel(scopeId: String) : BaseViewModel(scopeId) {
 
     fun openApartment(id: String) {
         navigator.push(Routes.APARTMENT_EDITOR, mapOf("id" to id))
+    }
+
+    fun openMap(apartment: Apartment) {
+        navigator.push(Routes.APARTMENT_MAP, mapOf("id" to apartment.id!!), cached = true)
     }
 
 }

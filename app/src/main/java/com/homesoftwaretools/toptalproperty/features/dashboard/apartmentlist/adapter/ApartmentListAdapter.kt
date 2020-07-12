@@ -20,7 +20,8 @@ class ApartmentListAdapter(
     context: Context,
     private val fmt: NumberFormatter,
     private val rp: ResourceProvider,
-    private val onClick: (String) -> Unit
+    private val onClick: (String) -> Unit,
+    private val onMapClick: (Apartment) -> Unit
 ) : RecyclerView.Adapter<ApartmentViewHolder>() {
 
     private var data: List<Pair<Apartment, User>> = emptyList()
@@ -48,6 +49,7 @@ class ApartmentListAdapter(
     override fun onBindViewHolder(holder: ApartmentViewHolder, position: Int) {
         holder.populate(data[position].first, data[position].second)
         holder.setOnClickListener { onClick(data[position].first.id!!) }
+        holder.setOnMapClickListener { onMapClick(data[position].first) }
     }
 
 }
@@ -66,6 +68,7 @@ class ApartmentViewHolder(
     private val area by lazy { view.findViewById<TextView>(R.id.area) }
     private val rooms by lazy { view.findViewById<TextView>(R.id.rooms) }
     private val price by lazy { view.findViewById<TextView>(R.id.price) }
+    private val mapButton by lazy { view.findViewById<View>(R.id.view_on_map_button) }
 
     fun populate(apartment: Apartment, user: User) {
         realtorName.text = rp.string(R.string.realtor_name_format_string).format(user.name)
@@ -79,6 +82,10 @@ class ApartmentViewHolder(
 
     fun setOnClickListener(listener: (View) -> Unit) {
         card.setOnClickListener(listener)
+    }
+
+    fun setOnMapClickListener(listener: (View) -> Unit) {
+        mapButton.setOnClickListener(listener)
     }
 
 }

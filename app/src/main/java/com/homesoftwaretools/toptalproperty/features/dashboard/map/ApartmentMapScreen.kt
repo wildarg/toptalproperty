@@ -2,6 +2,7 @@ package com.homesoftwaretools.toptalproperty.features.dashboard.map
 
 import android.os.Bundle
 import android.view.View
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -14,6 +15,7 @@ import com.homesoftwaretools.toptalproperty.domain.Apartment
 import com.homesoftwaretools.toptalproperty.domain.Location
 import com.homesoftwaretools.toptalproperty.domain.User
 import com.homesoftwaretools.toptalproperty.features.dashboard.apartmentlist.ApartmentListViewModel
+import com.homesoftwaretools.toptalproperty.logd
 import org.koin.android.ext.android.inject
 import kotlin.math.max
 import kotlin.math.min
@@ -35,7 +37,6 @@ class ApartmentMapScreen : BaseFragment(), OnMapReadyCallback {
 
         mapView?.onCreate(null)
         mapView?.getMapAsync(this)
-        vm.data.onChange(this::onDataChange)
     }
 
     private fun initView(v: View) {
@@ -68,6 +69,7 @@ class ApartmentMapScreen : BaseFragment(), OnMapReadyCallback {
     }
 
     override fun onMapReady(p: GoogleMap?) {
+        if (map == p) return
         map = p
         map?.uiSettings?.apply {
             isCompassEnabled = true
@@ -77,19 +79,40 @@ class ApartmentMapScreen : BaseFragment(), OnMapReadyCallback {
             isZoomControlsEnabled = true
         }
         map?.setInfoWindowAdapter(MarkerInfoAdapter(activity!!))
-        vm.data.value?.let(this::onDataChange)
+        vm.data.onChange(this::onDataChange)
     }
 
     private fun onDataChange(list: List<Pair<Apartment, User>>) {
         map ?: return
         markers.values.forEach { it.remove() }
         markers.clear()
-        val bounds = MapBounds()
+        if (list.isEmpty()) return
+        val bounds = LatLngBounds.builder()
+        var target: Apartment? = null
+        val id = arguments?.getString("id") ?: ""
         list.forEach { (ap, user) ->
-            bounds.addPosition(ap.location.toLatLng())
+            bounds.include(ap.location.toLatLng())
             addMarker(ap, user)
+            if (ap.id == id)
+                target = ap
         }
-        map?.setLatLngBoundsForCameraTarget(bounds.getBounds())
+        if (target != null)
+            setPosition(target!!)
+        else
+            setPosition(bounds.build())
+    }
+
+    private fun setPosition(bounds: LatLngBounds) {
+        map?.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100))
+    }
+
+    private fun setPosition(apartment: Apartment) {
+        apartment.location
+            .let { LatLng(it.latitude, it.longitude) }
+            .let { CameraPosition.builder().target(it).zoom(14f).build() }
+            .let { CameraUpdateFactory.newCameraPosition(it) }
+            .let { map?.moveCamera(it) }
+        markers[apartment.id!!]?.showInfoWindow()
     }
 
     private fun getSnippet(apartment: Apartment, user: User): String {
@@ -102,7 +125,7 @@ class ApartmentMapScreen : BaseFragment(), OnMapReadyCallback {
         ).let { if (apartment.rented == true) rp.string(R.string.rented_label) + "\n" + it else it }
     }
 
-    private val markers = HashMap<Apartment, Marker>()
+    private val markers = HashMap<String, Marker>()
 
     private fun addMarker(apartment: Apartment, user: User) {
         val marker = MarkerOptions()
@@ -112,27 +135,9 @@ class ApartmentMapScreen : BaseFragment(), OnMapReadyCallback {
             .icon(BitmapDescriptorFactory.fromResource(
                 if (apartment.rented == true) R.drawable.ic_rented_house_24px else R.drawable.ic_house_24px
             ))
-        map?.addMarker(marker)?.let { markers[apartment] = it }
+        map?.addMarker(marker)?.let { markers[apartment.id!!] = it }
     }
 
     private fun Location.toLatLng(): LatLng = LatLng(this.latitude, this.longitude)
-
-}
-
-class MapBounds {
-
-    private var minPos: LatLng? = null
-    private var maxPos: LatLng? = null
-
-    fun addPosition(pos: LatLng) {
-        minPos = if (minPos == null) pos
-        else LatLng(min(minPos!!.latitude, pos.latitude), min(minPos!!.longitude, pos.longitude))
-        maxPos = if (maxPos == null) pos
-        else LatLng(max(minPos!!.latitude, pos.latitude), max(minPos!!.longitude, pos.longitude))
-    }
-
-    fun getBounds(): LatLngBounds {
-        return LatLngBounds(minPos, maxPos)
-    }
 
 }

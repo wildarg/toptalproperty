@@ -106,5 +106,17 @@
 
         </LinearLayout>
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/view_on_map_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="8dp"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:text="@string/view_on_map_action"
+            app:icon="@drawable/ic_map_24px"
+            android:textSize="12sp"
+            />
+
     </FrameLayout>
 </com.google.android.material.card.MaterialCardView>

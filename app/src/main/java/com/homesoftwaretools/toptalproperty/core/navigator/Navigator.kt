@@ -2,6 +2,7 @@ package com.homesoftwaretools.toptalproperty.core.navigator
 
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.homesoftwaretools.toptalproperty.R
@@ -19,7 +20,7 @@ import kotlin.collections.HashMap
 import kotlin.reflect.KClass
 
 interface Navigator {
-    fun push(target: Fragment, replace: Boolean = true, stack: String = "")
+    fun push(target: Fragment, replace: Boolean = true, stack: String = "", args: Map<String, String> = emptyMap())
     fun push(name: String, args: Map<String, String> = emptyMap(), cached: Boolean = false)
     fun popBack()
     fun pushLoader()
@@ -41,8 +42,14 @@ class AppNavigator(private val context: Context) : Navigator {
         )
     }
 
-    override fun push(target: Fragment, replace: Boolean, stack: String) {
+    fun toBundle(args: Map<String, String>): Bundle {
+        return Bundle()
+            .apply { args.entries.forEach { (key, vaue) -> putString(key, vaue) } }
+    }
+
+    override fun push(target: Fragment, replace: Boolean, stack: String, args: Map<String, String>) {
         val mgr = (context as? BaseActivity)?.supportFragmentManager ?: return
+        target.arguments = toBundle(args)
         mgr.beginTransaction()
             .apply { if (replace) this.replace(R.id.container, target) else this.add(R.id.container, target) }
             .addToBackStack(stack)
@@ -73,7 +80,7 @@ class AppNavigator(private val context: Context) : Navigator {
 
     override fun push(name: String, args: Map<String, String>, cached: Boolean) {
         when (val route = routes[name.toLowerCase(Locale.getDefault())]) {
-            is FragmentRoute -> push(target = getFragment(name, route, cached))
+            is FragmentRoute -> push(target = getFragment(name, route, cached), args = args)
             is ActivityRoute -> startActivity(route, args)
             else -> logd { "Unknown route $name" }
         }

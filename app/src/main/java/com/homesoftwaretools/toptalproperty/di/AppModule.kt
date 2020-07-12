@@ -49,7 +49,14 @@ val useCases = module {
     factory<LoginUseCase> { LoginUseCaseImpl() }
     factory<SplashUseCase> { SplashUseCaseImpl(authRepo = get(), userRepo = get()) }
     factory<UserCardUseCase> { UserCardUseCaseImpl(authRepo = get(), userRepo = get()) }
-    factory<ApartmentEditorUseCase> { ApartmentEditorUseCaseImpl(apartmentRepo = get(), userRepo = get()) }
+    factory<ApartmentEditorUseCase> {
+        ApartmentEditorUseCaseImpl(
+            apartmentRepo = get(),
+            userRepo = get(),
+            geocodeRepo = get(),
+            rp = get()
+        )
+    }
     factory<ApartmentListUseCase> { ApartmentListUseCaseImpl(apartRepo = get(), userRepo = get()) }
 }
 

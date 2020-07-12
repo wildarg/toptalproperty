@@ -49,6 +49,7 @@ class ApartmentEditorScreen : BaseFragment() {
     private lateinit var longitudeEditor: TextInputEditText
     private lateinit var longitudeLayout: TextInputLayout
     private lateinit var saveButton: View
+    private lateinit var progress: View
 
     private val fmt: NumberFormatter by inject()
     private val rp: ResourceProvider by inject()
@@ -59,9 +60,17 @@ class ApartmentEditorScreen : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         initView(view)
 
-        addressLayout.setEndIconOnClickListener { logd { "Click" } }
+        addressLayout.setEndIconOnClickListener { vm.setAddress(addressEditor.text.toString()) }
         saveButton.setOnClickListener(this::onSaveClick)
         vm.apartment.onChange{ (apartment, user) -> this.populate(apartment, user) }
+        vm.position.onChange { location ->
+            latitudeEditor.setText(fmt.formatNum(location.latitude))
+            longitudeEditor.setText(fmt.formatNum(location.longitude))
+            latitudeEditor.requestFocus()
+        }
+        vm.decodeProgress.onChange { isLoading ->
+            progress.visible = isLoading
+        }
 
         id = args("id")
         if (id != null)
@@ -93,6 +102,7 @@ class ApartmentEditorScreen : BaseFragment() {
         longitudeEditor = v.findViewById(R.id.longitude_editor)
         longitudeLayout = v.findViewById(R.id.longitude_layout)
         saveButton = v.findViewById(R.id.save_button)
+        progress = v.findViewById(R.id.progress)
     }
 
     private fun populate(apartment: Apartment, realtor: User) {
@@ -147,6 +157,8 @@ class ApartmentEditorViewModel(scopeId: String) : BaseViewModel(scopeId) {
     private val rp: ResourceProvider by inject()
 
     val apartment: LiveData<Pair<Apartment, User>> = MutableLiveData()
+    val position: LiveData<Location> = MutableLiveData()
+    val decodeProgress: LiveData<Boolean> = MutableLiveData(false)
 
     fun loadApartment(id: String) {
         useCase.load(id)
@@ -167,6 +179,17 @@ class ApartmentEditorViewModel(scopeId: String) : BaseViewModel(scopeId) {
                     toaster.toast(rp.string(R.string.save_successful_toast))
                     navigator.popBack()
                 },
+                onError = toaster::showError
+            )
+    }
+
+    fun setAddress(address: String?) {
+        if (address.isNullOrBlank()) return
+        useCase.decodeAddress(address)
+            .doOnSubscribe { (decodeProgress as MutableLiveData).postValue(true) }
+            .doFinally { (decodeProgress as MutableLiveData).postValue(false) }
+            .bindSubscribe(
+                onSuccess = (position as MutableLiveData)::postValue,
                 onError = toaster::showError
             )
     }
