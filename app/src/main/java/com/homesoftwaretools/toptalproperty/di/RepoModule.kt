@@ -8,6 +8,9 @@ import com.homesoftwaretools.toptalproperty.repo.dao.ApartmentDao
 import com.homesoftwaretools.toptalproperty.repo.dao.UserDao
 import com.homesoftwaretools.toptalproperty.repo.firebase.*
 import com.homesoftwaretools.toptalproperty.repo.googlemap.GoogleGeocodeRepo
+import com.homesoftwaretools.toptalproperty.repo.prefs.AndroidPrefsRepo
+import com.homesoftwaretools.toptalproperty.repo.prefs.PrefsRepo
+import com.homesoftwaretools.toptalproperty.repo.prefs.SharedPrefsFilterRepo
 import org.koin.dsl.module
 
 val repoModule = module {
@@ -22,4 +25,6 @@ val repoModule = module {
     single<UserRepo> { UserRepoImpl(userDao = get(), authRepo = get()) }
     single<ApartmentRepo> { ApartmentRepoImpl(dao = get(), dt = get()) }
     single<GeocodeRepo> { GoogleGeocodeRepo() }
+    single<PrefsRepo> { AndroidPrefsRepo(context = get()) }
+    single<FilterRepo> { SharedPrefsFilterRepo(prefs = get()) }
 }

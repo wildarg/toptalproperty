@@ -34,7 +34,6 @@ class FireStoreApartmentDao(
             .inRange(AREA, filter.minArea, filter.maxArea)
             .inRange(PRICE, filter.minPrice, filter.maxPrice)
             .inRange(ROOMS, filter.minRooms, filter.maxRooms)
-            .orderBy(CREATED)
             .addSnapshotListener { snapshot, e ->
                 when {
                     e != null        -> o.onError(e)

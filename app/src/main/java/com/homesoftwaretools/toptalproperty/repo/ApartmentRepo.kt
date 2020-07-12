@@ -31,7 +31,8 @@ class ApartmentRepoImpl(
             .let(dao::save)
     }
 
-    override fun getAll(filter: Filter): Observable<List<Apartment>> = dao.getAll(filter)
+    override fun getAll(filter: Filter): Observable<List<Apartment>> =
+        dao.getAll(filter).map { list -> list.sortedBy { it.created } }
 
     override fun get(id: String): Single<Apartment> = dao.get(id)
 }

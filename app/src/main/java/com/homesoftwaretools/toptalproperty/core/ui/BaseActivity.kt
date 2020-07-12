@@ -93,8 +93,12 @@ abstract class BaseScaffoldActivity : BaseActivity() {
         return true
     }
 
-    protected fun openDrawer() {
+    fun openDrawer() {
         drawer.openDrawer(GravityCompat.END, true)
+    }
+
+    fun hideDrawer() {
+        drawer.closeDrawer(GravityCompat.END, true)
     }
 
     override fun onFragmentTransaction(transaction: FragmentTransaction) {

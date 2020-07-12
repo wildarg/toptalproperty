@@ -13,4 +13,12 @@
         tools:layout="@layout/user_card"
         />
 
+    <fragment
+        android:id="@+id/filter"
+        android:name="com.homesoftwaretools.toptalproperty.features.filter.FilterScreen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:layout="@layout/filter_screen"
+        />
+
 </LinearLayout>

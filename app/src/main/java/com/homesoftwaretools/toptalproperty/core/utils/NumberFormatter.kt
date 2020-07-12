@@ -12,6 +12,8 @@ interface NumberFormatter {
     fun formatCurrency(num: Double): String
     fun parseNum(src: String?): Double
     fun parseInt(src: String?): Int
+    fun parseNumOrNull(src: String?): Double?
+    fun parseIntOrNull(src: String?): Int?
 }
 
 
@@ -45,5 +47,21 @@ class NumberFormatterImpl(private val rp: ResourceProvider) : NumberFormatter {
 
     override fun parseInt(src: String?): Int {
         return formatter.parse(src.orEmpty())?.toInt() ?: 0
+    }
+
+    override fun parseNumOrNull(src: String?): Double? {
+        return try {
+            src?.takeIf { it.isNotBlank() }?.let(this::parseNum)
+        } catch(e: Throwable) {
+            null
+        }
+    }
+
+    override fun parseIntOrNull(src: String?): Int? {
+        return try {
+            src?.takeIf { it.isNotBlank() }?.let(this::parseInt)
+        } catch (e: Throwable) {
+            null
+        }
     }
 }

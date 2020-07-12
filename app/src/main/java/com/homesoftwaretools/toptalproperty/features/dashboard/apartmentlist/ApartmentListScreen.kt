@@ -56,6 +56,8 @@ class ApartmentListViewModel(scopeId: String) : BaseViewModel(scopeId) {
 
     init {
         useCase.getList()
+            .doOnSubscribe { navigator.pushLoader() }
+            .doOnEach { navigator.hideLoader() }
             .bindSubscribe(
                 onNext = this::postData,
                 onError = toaster::showError

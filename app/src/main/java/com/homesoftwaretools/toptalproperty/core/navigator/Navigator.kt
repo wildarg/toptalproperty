@@ -28,6 +28,8 @@ interface Navigator {
     fun hideLoader()
     fun showFab()
     fun hideFab()
+    fun openDrawer()
+    fun hideDrawer()
 }
 
 class AppNavigator(private val context: Context) : Navigator {
@@ -108,6 +110,14 @@ class AppNavigator(private val context: Context) : Navigator {
 
     override fun hideFab() {
         (context as? BaseScaffoldActivity)?.hideFab()
+    }
+
+    override fun openDrawer() {
+        (context as? BaseScaffoldActivity)?.openDrawer()
+    }
+
+    override fun hideDrawer() {
+        (context as? BaseScaffoldActivity)?.hideDrawer()
     }
 }
 
