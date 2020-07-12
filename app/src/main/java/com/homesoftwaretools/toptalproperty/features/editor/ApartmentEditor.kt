@@ -12,10 +12,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.homesoftwaretools.toptalproperty.R
 import com.homesoftwaretools.toptalproperty.core.navigator.Navigator
-import com.homesoftwaretools.toptalproperty.core.ui.BaseActivity
-import com.homesoftwaretools.toptalproperty.core.ui.BaseFragment
-import com.homesoftwaretools.toptalproperty.core.ui.BaseViewModel
-import com.homesoftwaretools.toptalproperty.core.ui.onClick
+import com.homesoftwaretools.toptalproperty.core.ui.*
 import com.homesoftwaretools.toptalproperty.core.utils.NumberFormatter
 import com.homesoftwaretools.toptalproperty.core.utils.ResourceProvider
 import com.homesoftwaretools.toptalproperty.core.utils.Toaster
@@ -100,6 +97,7 @@ class ApartmentEditorScreen : BaseFragment() {
 
     private fun populate(apartment: Apartment, realtor: User) {
         realtorName.text = rp.string(R.string.realtor_name_format_string).format(realtor.name)
+        realtorName.visible = true
         rentedSwitcher.isChecked = apartment.rented ?: false
         nameEditor.setText(apartment.name)
         descriptionEditor.setText(apartment.description)

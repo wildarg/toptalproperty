@@ -4,6 +4,7 @@ import com.homesoftwaretools.toptalproperty.core.navigator.AppNavigator
 import com.homesoftwaretools.toptalproperty.core.navigator.Navigator
 import com.homesoftwaretools.toptalproperty.core.utils.*
 import com.homesoftwaretools.toptalproperty.features.dashboard.DashboardActivity
+import com.homesoftwaretools.toptalproperty.features.dashboard.DashboardViewModel
 import com.homesoftwaretools.toptalproperty.features.dashboard.apartmentlist.ApartmentListUseCase
 import com.homesoftwaretools.toptalproperty.features.dashboard.apartmentlist.ApartmentListUseCaseImpl
 import com.homesoftwaretools.toptalproperty.features.dashboard.apartmentlist.ApartmentListViewModel
@@ -41,6 +42,7 @@ val appModule = module {
     viewModel { (id: String) -> UserCardViewModel(id) }
     viewModel { (id: String) -> ApartmentEditorViewModel(id) }
     viewModel { (id: String) -> ApartmentListViewModel(id) }
+    viewModel { (id: String) -> DashboardViewModel(id) }
 }
 
 val useCases = module {

@@ -45,6 +45,18 @@
                 />
         </LinearLayout>
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:src="@drawable/ic_plus_24px"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="70dp"
+            app:backgroundTint="@color/colorPrimary"
+            app:tint="@color/white_01"
+            />
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <com.google.android.material.navigation.NavigationView

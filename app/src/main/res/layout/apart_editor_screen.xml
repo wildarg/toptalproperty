@@ -35,7 +35,8 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="@tools:sample/full_names"
             style="@style/Text.Label.NoCaps"
-            android:textColor="@color/blue_01"/>
+            android:textColor="@color/blue_01"
+            android:visibility="gone"/>
 
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/rented_switch"
