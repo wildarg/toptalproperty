@@ -13,8 +13,10 @@ import com.homesoftwaretools.toptalproperty.core.ui.BaseFragment
 import com.homesoftwaretools.toptalproperty.core.ui.BaseViewModel
 import com.homesoftwaretools.toptalproperty.core.ui.onClick
 import com.homesoftwaretools.toptalproperty.core.utils.NumberFormatter
+import com.homesoftwaretools.toptalproperty.core.utils.ResourceProvider
 import com.homesoftwaretools.toptalproperty.core.utils.Toaster
 import com.homesoftwaretools.toptalproperty.domain.Apartment
+import com.homesoftwaretools.toptalproperty.domain.User
 import com.homesoftwaretools.toptalproperty.features.dashboard.apartmentlist.adapter.ApartmentListAdapter
 import com.homesoftwaretools.toptalproperty.repo.ApartmentRepo
 import org.koin.android.ext.android.inject
@@ -28,12 +30,13 @@ class ApartmentListScreen : BaseFragment() {
     lateinit var adapter: ApartmentListAdapter
 
     private val fmt: NumberFormatter by inject()
+    private val rp: ResourceProvider by inject()
     private val vm: ApartmentListViewModel by scopedViewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView(view)
-        adapter = ApartmentListAdapter(view.context, fmt, onClick = vm::openApartment)
+        adapter = ApartmentListAdapter(view.context, fmt, rp, onClick = vm::openApartment)
         recycler.adapter = adapter
         vm.data.onChange(adapter::swapData)
         fab.onClick { vm.createNewApartment() }
@@ -49,19 +52,19 @@ class ApartmentListViewModel(scopeId: String) : BaseViewModel(scopeId) {
 
     private val toaster: Toaster by scope.inject()
     private val navigator: Navigator by scope.inject()
-    private val repo: ApartmentRepo by inject()
+    private val useCase: ApartmentListUseCase by inject()
 
-    val data: LiveData<List<Apartment>> = MutableLiveData()
+    val data: LiveData<List<Pair<Apartment, User>>> = MutableLiveData()
 
     init {
-        repo.getAll()
+        useCase.getList()
             .bindSubscribe(
                 onNext = this::postData,
                 onError = toaster::showError
             )
     }
 
-    private fun postData(list: List<Apartment>) {
+    private fun postData(list: List<Pair<Apartment, User>>) {
         (data as MutableLiveData).postValue(list)
     }
 

@@ -24,11 +24,13 @@
     <string name="longitude_label">Longitude</string>
     <string name="save_action">Save</string>
     <string name="save_successful_toast">Saved successfully</string>
+    <string name="rented_label">Rented</string>
 
     <string name="admin_role_name">Administrator</string>
     <string name="realtor_role_name">Realtor</string>
     <string name="customer_role_name">Customer</string>
 
+    <string name="realtor_name_format_string">Realtor: %s</string>
     <string name="area_format_string">%s sqft</string>
     <string name="rooms_format_string">%s BDR</string>
     <string name="price_format_string">$%s SGD</string>

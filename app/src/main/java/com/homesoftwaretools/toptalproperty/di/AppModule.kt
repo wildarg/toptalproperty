@@ -4,6 +4,8 @@ import com.homesoftwaretools.toptalproperty.core.navigator.AppNavigator
 import com.homesoftwaretools.toptalproperty.core.navigator.Navigator
 import com.homesoftwaretools.toptalproperty.core.utils.*
 import com.homesoftwaretools.toptalproperty.features.dashboard.DashboardActivity
+import com.homesoftwaretools.toptalproperty.features.dashboard.apartmentlist.ApartmentListUseCase
+import com.homesoftwaretools.toptalproperty.features.dashboard.apartmentlist.ApartmentListUseCaseImpl
 import com.homesoftwaretools.toptalproperty.features.dashboard.apartmentlist.ApartmentListViewModel
 import com.homesoftwaretools.toptalproperty.features.editor.ApartmentEditorUseCase
 import com.homesoftwaretools.toptalproperty.features.editor.ApartmentEditorUseCaseImpl
@@ -46,6 +48,7 @@ val useCases = module {
     factory<SplashUseCase> { SplashUseCaseImpl(authRepo = get(), userRepo = get()) }
     factory<UserCardUseCase> { UserCardUseCaseImpl(authRepo = get(), userRepo = get()) }
     factory<ApartmentEditorUseCase> { ApartmentEditorUseCaseImpl(apartmentRepo = get(), userRepo = get()) }
+    factory<ApartmentListUseCase> { ApartmentListUseCaseImpl(apartRepo = get(), userRepo = get()) }
 }
 
 val utils = module {

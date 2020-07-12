@@ -2,10 +2,12 @@ package com.homesoftwaretools.toptalproperty.features.editor
 
 import android.os.Bundle
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.homesoftwaretools.toptalproperty.R
@@ -19,6 +21,7 @@ import com.homesoftwaretools.toptalproperty.core.utils.ResourceProvider
 import com.homesoftwaretools.toptalproperty.core.utils.Toaster
 import com.homesoftwaretools.toptalproperty.domain.Apartment
 import com.homesoftwaretools.toptalproperty.domain.Location
+import com.homesoftwaretools.toptalproperty.domain.User
 import com.homesoftwaretools.toptalproperty.logd
 import org.koin.android.ext.android.inject
 import org.koin.core.inject
@@ -30,6 +33,8 @@ class ApartmentEditorActivity : BaseActivity() {
 class ApartmentEditorScreen : BaseFragment() {
     override val layoutId = R.layout.apart_editor_screen
 
+    private lateinit var realtorName: TextView
+    private lateinit var rentedSwitcher: SwitchMaterial
     private lateinit var nameEditor: TextInputEditText
     private lateinit var nameLayout: TextInputLayout
     private lateinit var descriptionEditor: TextInputEditText
@@ -59,7 +64,7 @@ class ApartmentEditorScreen : BaseFragment() {
 
         addressLayout.setEndIconOnClickListener { logd { "Click" } }
         saveButton.setOnClickListener(this::onSaveClick)
-        vm.apartment.onChange(this::populate)
+        vm.apartment.onChange{ (apartment, user) -> this.populate(apartment, user) }
 
         id = args("id")
         if (id != null)
@@ -72,6 +77,8 @@ class ApartmentEditorScreen : BaseFragment() {
     }
 
     private fun initView(v: View) {
+        realtorName = v.findViewById(R.id.realtor_name)
+        rentedSwitcher = v.findViewById(R.id.rented_switch)
         nameEditor = v.findViewById(R.id.name_editor)
         nameLayout = v.findViewById(R.id.name_layout)
         descriptionEditor = v.findViewById(R.id.description_editor)
@@ -91,7 +98,9 @@ class ApartmentEditorScreen : BaseFragment() {
         saveButton = v.findViewById(R.id.save_button)
     }
 
-    private fun populate(apartment: Apartment) {
+    private fun populate(apartment: Apartment, realtor: User) {
+        realtorName.text = rp.string(R.string.realtor_name_format_string).format(realtor.name)
+        rentedSwitcher.isChecked = apartment.rented ?: false
         nameEditor.setText(apartment.name)
         descriptionEditor.setText(apartment.description)
         areaEditor.setText(fmt.formatNum(apartment.area))
@@ -126,7 +135,8 @@ class ApartmentEditorScreen : BaseFragment() {
             location = Location(
                 latitude = fmt.parseNum(latitudeEditor.text.toString()),
                 longitude = fmt.parseNum(longitudeEditor.text.toString())
-            )
+            ),
+            rented = rentedSwitcher.isChecked
         )
     }
 }
@@ -138,7 +148,7 @@ class ApartmentEditorViewModel(scopeId: String) : BaseViewModel(scopeId) {
     private val useCase: ApartmentEditorUseCase by inject()
     private val rp: ResourceProvider by inject()
 
-    val apartment: LiveData<Apartment> = MutableLiveData()
+    val apartment: LiveData<Pair<Apartment, User>> = MutableLiveData()
 
     fun loadApartment(id: String) {
         useCase.load(id)
