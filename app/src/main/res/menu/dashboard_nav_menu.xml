@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/page_1"
+        android:id="@+id/list_page"
         android:enabled="true"
         android:icon="@drawable/ic_list_24px"
         android:title="@string/list_tab"/>
     <item
-        android:id="@+id/page_2"
+        android:id="@+id/map_page"
         android:enabled="true"
         android:icon="@drawable/ic_map_24px"
         android:title="@string/map_tab"/>

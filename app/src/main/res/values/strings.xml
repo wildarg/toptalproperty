@@ -34,6 +34,7 @@
     <string name="area_format_string">%s sqft</string>
     <string name="rooms_format_string">%s BDR</string>
     <string name="price_format_string">$%s SGD</string>
+    <string name="marker_snippet_format_string">realtor: %s\n%s\narea: %s sqrt\nrooms: %s BDR\nprice: %s SGD</string>
 
     <string name="google_map_api_key">AIzaSyAJdWDv-YCFY25ooxgasIf36PabYxz-L-E</string>
 </resources>

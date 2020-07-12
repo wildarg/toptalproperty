@@ -104,4 +104,12 @@ abstract class BaseScaffoldActivity : BaseActivity() {
     protected open fun onBottomItemSelect(item: MenuItem): Boolean {
         return true
     }
+
+    protected fun hideFab() {
+        fab.visible = false
+    }
+
+    protected fun showFab() {
+        fab.visible = true
+    }
 }

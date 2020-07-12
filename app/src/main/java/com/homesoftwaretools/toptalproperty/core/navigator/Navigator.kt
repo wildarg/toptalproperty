@@ -8,16 +8,19 @@ import com.homesoftwaretools.toptalproperty.R
 import com.homesoftwaretools.toptalproperty.core.ui.BaseActivity
 import com.homesoftwaretools.toptalproperty.core.ui.LoaderScreen
 import com.homesoftwaretools.toptalproperty.features.dashboard.DashboardActivity
+import com.homesoftwaretools.toptalproperty.features.dashboard.apartmentlist.ApartmentListScreen
+import com.homesoftwaretools.toptalproperty.features.dashboard.map.ApartmentMapScreen
 import com.homesoftwaretools.toptalproperty.features.editor.ApartmentEditorActivity
 import com.homesoftwaretools.toptalproperty.features.welcome.WelcomeActivity
 import com.homesoftwaretools.toptalproperty.features.welcome.login.LoginFragment
 import com.homesoftwaretools.toptalproperty.logd
 import java.util.*
+import kotlin.collections.HashMap
 import kotlin.reflect.KClass
 
 interface Navigator {
     fun push(target: Fragment, replace: Boolean = true, stack: String = "")
-    fun push(name: String, args: Map<String, String> = emptyMap())
+    fun push(name: String, args: Map<String, String> = emptyMap(), cached: Boolean = false)
     fun popBack()
     fun pushLoader()
     fun hideLoader()
@@ -25,16 +28,16 @@ interface Navigator {
 
 class AppNavigator(private val context: Context) : Navigator {
 
-    init {
-        logd { "AppNavigator:: Created with $context" }
-    }
+    private val fragmentCache = HashMap<String, Fragment>()
 
     private val routes by lazy {
         mapOf(
             Routes.WELCOME to ActivityRoute(WelcomeActivity::class, clearStack = true),
             Routes.LOG_IN to FragmentRoute { LoginFragment() },
             Routes.DASHBOARD to ActivityRoute(DashboardActivity::class, clearStack = true),
-            Routes.APARTMENT_EDITOR to ActivityRoute(ApartmentEditorActivity::class)
+            Routes.APARTMENT_EDITOR to ActivityRoute(ApartmentEditorActivity::class),
+            Routes.APARTMENT_LIST to FragmentRoute { ApartmentListScreen() },
+            Routes.APARTMENT_MAP to FragmentRoute { ApartmentMapScreen() }
         )
     }
 
@@ -59,9 +62,18 @@ class AppNavigator(private val context: Context) : Navigator {
             (context as? BaseActivity)?.finish()
     }
 
-    override fun push(name: String, args: Map<String, String>) {
+    private fun getFragment(name: String, route: FragmentRoute, cached: Boolean): Fragment {
+        return if (!cached) route.builder()
+        else
+            name.toLowerCase(Locale.getDefault()).let { n ->
+                fragmentCache[n]
+                    ?: route.builder().apply { fragmentCache[n] = this }
+            }
+    }
+
+    override fun push(name: String, args: Map<String, String>, cached: Boolean) {
         when (val route = routes[name.toLowerCase(Locale.getDefault())]) {
-            is FragmentRoute -> push(target = route.builder())
+            is FragmentRoute -> push(target = getFragment(name, route, cached))
             is ActivityRoute -> startActivity(route, args)
             else -> logd { "Unknown route $name" }
         }
