@@ -57,6 +57,8 @@ class LoginViewModel(scopeID: String) : BaseViewModel(scopeID) {
             return
 
         useCase.login(name, password)
+            .doFinally { navigator.hideLoader() }
+            .doOnSubscribe { navigator.pushLoader() }
             .bindSubscribe(
                 onSuccess = { navigator.push(Routes.DASHBOARD) },
                 onError = { toaster.toast(it.message) }

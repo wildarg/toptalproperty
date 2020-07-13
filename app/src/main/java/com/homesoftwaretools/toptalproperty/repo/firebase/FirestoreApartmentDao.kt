@@ -32,16 +32,21 @@ class FireStoreApartmentDao(
     }
 
     override fun getAll(filter: Filter): Observable<List<Apartment>> = Observable.create { o ->
-        collection
+        val listener = collection
             .inRange(AREA, filter.minArea, filter.maxArea)
             .inRange(PRICE, filter.minPrice, filter.maxPrice)
             .inRange(ROOMS, filter.minRooms, filter.maxRooms)
             .addSnapshotListener { snapshot, e ->
+                if (o.isDisposed) return@addSnapshotListener
                 when {
                     e != null        -> o.onError(e)
                     snapshot != null -> o.onNext(snapshot.documents.mapNotNull(this::toApartment))
                 }
             }
+        o.setCancellable {
+            logd { "WILD:: remove listener" }
+            listener.remove()
+        }
     }
 
     override fun save(apartment: Apartment): Single<Apartment> = Single.create { s ->
