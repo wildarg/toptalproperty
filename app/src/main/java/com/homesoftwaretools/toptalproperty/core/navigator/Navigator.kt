@@ -1,8 +1,11 @@
 package com.homesoftwaretools.toptalproperty.core.navigator
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.homesoftwaretools.toptalproperty.R
@@ -20,6 +23,7 @@ import java.util.*
 import kotlin.collections.HashMap
 import kotlin.reflect.KClass
 
+
 interface Navigator {
     fun push(target: Fragment, replace: Boolean = true, stack: String? = "", args: Map<String, String> = emptyMap())
     fun push(name: String, args: Map<String, String> = emptyMap(), cached: Boolean = false)
@@ -30,6 +34,7 @@ interface Navigator {
     fun hideFab()
     fun openDrawer()
     fun hideDrawer()
+    fun hideSoftKeyboard(view: View)
 }
 
 class AppNavigator(private val context: Context) : Navigator {
@@ -121,6 +126,11 @@ class AppNavigator(private val context: Context) : Navigator {
 
     override fun hideDrawer() {
         (context as? BaseScaffoldActivity)?.hideDrawer()
+    }
+
+    override fun hideSoftKeyboard(view: View) {
+        val imm = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 }
 

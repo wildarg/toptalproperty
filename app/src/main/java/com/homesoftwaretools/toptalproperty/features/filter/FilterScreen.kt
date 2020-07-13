@@ -36,7 +36,9 @@ class FilterScreen : BaseFragment() {
         initView(view)
 
         vm.filter.onChange(this::populate)
-        applyButton.onClick { vm.setFilter(collect()) }
+        applyButton.onClick {
+            vm.setFilter(it, collect())
+        }
     }
 
     private fun initView(v: View) {
@@ -87,7 +89,8 @@ class FilterViewModel(scopeId: String) : BaseViewModel(scopeId) {
             )
     }
 
-    fun setFilter(filter: Filter) {
+    fun setFilter(view: View, filter: Filter) {
+        navigator.hideSoftKeyboard(view)
         repo.setFilter(filter)
             .bindSubscribe(
                 onComplete = { navigator.hideDrawer() },
