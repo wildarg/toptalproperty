@@ -37,6 +37,7 @@ class ApartmentMapScreen : BaseFragment(), OnMapReadyCallback {
 
         mapView?.onCreate(null)
         mapView?.getMapAsync(this)
+        vm.data.onChange(this::onDataChange)
     }
 
     private fun initView(v: View) {
@@ -78,8 +79,8 @@ class ApartmentMapScreen : BaseFragment(), OnMapReadyCallback {
             isZoomGesturesEnabled = true
             isZoomControlsEnabled = true
         }
-        map?.setInfoWindowAdapter(MarkerInfoAdapter(activity!!))
-        vm.data.onChange(this::onDataChange)
+        map?.setInfoWindowAdapter(MarkerInfoAdapter(requireActivity()))
+        vm.data.value?.let(this::onDataChange)
     }
 
     private fun onDataChange(list: List<Pair<Apartment, User>>) {

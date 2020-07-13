@@ -49,6 +49,7 @@ class ApartmentEditorScreen : BaseFragment() {
     private lateinit var longitudeEditor: TextInputEditText
     private lateinit var longitudeLayout: TextInputLayout
     private lateinit var saveButton: View
+    private lateinit var deleteButton: View
     private lateinit var progress: View
 
     private val fmt: NumberFormatter by inject()
@@ -62,6 +63,7 @@ class ApartmentEditorScreen : BaseFragment() {
 
         addressLayout.setEndIconOnClickListener { vm.setAddress(addressEditor.text.toString()) }
         saveButton.setOnClickListener(this::onSaveClick)
+        deleteButton.setOnClickListener(this::onDeleteClick)
         vm.apartment.onChange{ (apartment, user) -> this.populate(apartment, user) }
         vm.position.onChange { location ->
             latitudeEditor.setText(fmt.formatNum(location.latitude))
@@ -80,6 +82,11 @@ class ApartmentEditorScreen : BaseFragment() {
     private fun onSaveClick(v: View) {
         if (checkForm())
             vm.saveApartment(collectData(), id)
+    }
+
+    private fun onDeleteClick(v: View) {
+        if (id != null)
+            vm.delete(id!!)
     }
 
     private fun initView(v: View) {
@@ -102,6 +109,7 @@ class ApartmentEditorScreen : BaseFragment() {
         longitudeEditor = v.findViewById(R.id.longitude_editor)
         longitudeLayout = v.findViewById(R.id.longitude_layout)
         saveButton = v.findViewById(R.id.save_button)
+        deleteButton = v.findViewById(R.id.delete_button)
         progress = v.findViewById(R.id.progress)
     }
 
@@ -190,6 +198,17 @@ class ApartmentEditorViewModel(scopeId: String) : BaseViewModel(scopeId) {
             .doFinally { (decodeProgress as MutableLiveData).postValue(false) }
             .bindSubscribe(
                 onSuccess = (position as MutableLiveData)::postValue,
+                onError = toaster::showError
+            )
+    }
+
+    fun delete(id: String) {
+        useCase.delete(id)
+            .bindSubscribe(
+                onComplete = {
+                    toaster.toast(rp.string(R.string.remove_successful_toast))
+                    navigator.popBack()
+                },
                 onError = toaster::showError
             )
     }

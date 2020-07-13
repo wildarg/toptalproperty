@@ -92,7 +92,10 @@ class AppNavigator(private val context: Context) : Navigator {
     }
 
     override fun popBack() {
-        (context as? BaseActivity)?.finish()
+        val activity = context as? BaseActivity
+        activity ?: return
+        if (!activity.isFinishing)
+            activity.finish()
     }
 
     override fun pushLoader() {

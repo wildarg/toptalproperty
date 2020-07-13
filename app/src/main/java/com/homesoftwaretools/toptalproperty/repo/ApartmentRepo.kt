@@ -4,7 +4,9 @@ import com.homesoftwaretools.toptalproperty.core.utils.DateProvider
 import com.homesoftwaretools.toptalproperty.domain.Apartment
 import com.homesoftwaretools.toptalproperty.domain.Filter
 import com.homesoftwaretools.toptalproperty.domain.User
+import com.homesoftwaretools.toptalproperty.logd
 import com.homesoftwaretools.toptalproperty.repo.dao.ApartmentDao
+import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 
@@ -12,6 +14,7 @@ interface ApartmentRepo {
     fun save(apartment: Apartment, realtor: User): Single<Apartment>
     fun getAll(filter: Filter = Filter.EMPTY): Observable<List<Apartment>>
     fun get(id: String): Single<Apartment>
+    fun delete(id: String): Completable
 }
 
 
@@ -35,4 +38,6 @@ class ApartmentRepoImpl(
         dao.getAll(filter).map { list -> list.sortedBy { it.created } }
 
     override fun get(id: String): Single<Apartment> = dao.get(id)
+
+    override fun delete(id: String): Completable = dao.delete(id)
 }

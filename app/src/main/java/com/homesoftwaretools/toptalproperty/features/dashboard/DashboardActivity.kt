@@ -49,11 +49,11 @@ class DashboardViewModel(scopeId: String) : BaseViewModel(scopeId) {
     }
 
     fun openMap() {
-        navigator.push(Routes.APARTMENT_MAP, cached = true)
+        navigator.push(Routes.APARTMENT_MAP)
     }
 
     fun openList() {
-        navigator.push(Routes.APARTMENT_LIST, cached = true)
+        navigator.push(Routes.APARTMENT_LIST)
     }
 
 }

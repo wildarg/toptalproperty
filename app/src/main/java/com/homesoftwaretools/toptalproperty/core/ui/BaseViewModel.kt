@@ -1,6 +1,7 @@
 package com.homesoftwaretools.toptalproperty.core.ui
 
 import androidx.lifecycle.ViewModel
+import com.homesoftwaretools.toptalproperty.logd
 import io.reactivex.Completable
 import io.reactivex.Maybe
 import io.reactivex.Observable

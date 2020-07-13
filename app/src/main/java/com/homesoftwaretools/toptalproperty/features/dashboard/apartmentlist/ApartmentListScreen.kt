@@ -16,6 +16,7 @@ import com.homesoftwaretools.toptalproperty.core.utils.Toaster
 import com.homesoftwaretools.toptalproperty.domain.Apartment
 import com.homesoftwaretools.toptalproperty.domain.User
 import com.homesoftwaretools.toptalproperty.features.dashboard.apartmentlist.adapter.ApartmentListAdapter
+import com.homesoftwaretools.toptalproperty.logd
 import org.koin.android.ext.android.inject
 import org.koin.core.inject
 
@@ -56,8 +57,6 @@ class ApartmentListViewModel(scopeId: String) : BaseViewModel(scopeId) {
 
     init {
         useCase.getList()
-            .doOnSubscribe { navigator.pushLoader() }
-            .doOnEach { navigator.hideLoader() }
             .bindSubscribe(
                 onNext = this::postData,
                 onError = toaster::showError
@@ -74,7 +73,7 @@ class ApartmentListViewModel(scopeId: String) : BaseViewModel(scopeId) {
 
     fun openMap(apartment: Apartment) {
         navigator.hideFab()
-        navigator.push(Routes.APARTMENT_MAP, mapOf("id" to apartment.id!!), cached = true)
+        navigator.push(Routes.APARTMENT_MAP, mapOf("id" to apartment.id!!))
     }
 
 }

@@ -15,6 +15,7 @@ class SharedPrefsFilterRepo(
 
     override fun observeFilter(): Observable<Filter> =
         subj.doOnSubscribe { updateFromPrefs() }
+            .distinctUntilChanged()
 
     private fun updateFromPrefs() {
         subj.onNext(getFilter())

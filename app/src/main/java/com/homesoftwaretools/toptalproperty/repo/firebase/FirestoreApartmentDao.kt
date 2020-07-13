@@ -7,8 +7,10 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.homesoftwaretools.toptalproperty.domain.Apartment
 import com.homesoftwaretools.toptalproperty.domain.Filter
+import com.homesoftwaretools.toptalproperty.logd
 import com.homesoftwaretools.toptalproperty.repo.dao.ApartmentDao
 import com.homesoftwaretools.toptalproperty.repo.dao.ApartmentNotFoundException
+import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 
@@ -67,12 +69,10 @@ class FireStoreApartmentDao(
             .addOnFailureListener(s::onError)
     }
 
-    override fun delete(apartment: Apartment): Single<Apartment> = Single.create { s ->
-        apartment.id?.let { id ->
-            collection.document(id).delete()
-                .addOnSuccessListener { s.onSuccess(apartment) }
-                .addOnFailureListener(s::onError)
-        } ?: s.onError(ApartmentNotFoundException("null"))
+    override fun delete(id: String): Completable = Completable.create { c ->
+        collection.document(id).delete()
+            .addOnSuccessListener { c.onComplete() }
+            .addOnFailureListener(c::onError)
     }
 
     companion object {

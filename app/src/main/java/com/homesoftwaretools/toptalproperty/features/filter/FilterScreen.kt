@@ -89,7 +89,6 @@ class FilterViewModel(scopeId: String) : BaseViewModel(scopeId) {
 
     fun setFilter(filter: Filter) {
         repo.setFilter(filter)
-            .doOnSubscribe { navigator.pushLoader() }
             .bindSubscribe(
                 onComplete = { navigator.hideDrawer() },
                 onError = toaster::showError
