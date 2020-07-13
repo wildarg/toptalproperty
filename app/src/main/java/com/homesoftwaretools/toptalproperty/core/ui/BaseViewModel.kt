@@ -1,6 +1,10 @@
 package com.homesoftwaretools.toptalproperty.core.ui
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.homesoftwaretools.toptalproperty.R
+import com.homesoftwaretools.toptalproperty.core.utils.ResourceProvider
 import com.homesoftwaretools.toptalproperty.logd
 import io.reactivex.Completable
 import io.reactivex.Maybe
@@ -52,4 +56,12 @@ abstract class BaseViewModel(private val scopeID: ScopeID) : ViewModel(), KoinCo
         disposable.clear()
         disposable = CompositeDisposable()
     }
+
+    fun BaseViewModel.checkIfEmpty(src: String, liveData: LiveData<String>, rp: ResourceProvider): Boolean {
+        return src.isBlank().apply {
+            (liveData as MutableLiveData)
+                .postValue(if (this) rp.string(R.string.required_field_error) else "")
+        }
+    }
+
 }

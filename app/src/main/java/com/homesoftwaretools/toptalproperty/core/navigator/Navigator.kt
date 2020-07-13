@@ -17,7 +17,9 @@ import com.homesoftwaretools.toptalproperty.features.dashboard.apartmentlist.Apa
 import com.homesoftwaretools.toptalproperty.features.dashboard.map.ApartmentMapScreen
 import com.homesoftwaretools.toptalproperty.features.editor.ApartmentEditorActivity
 import com.homesoftwaretools.toptalproperty.features.welcome.WelcomeActivity
-import com.homesoftwaretools.toptalproperty.features.welcome.login.LoginFragment
+import com.homesoftwaretools.toptalproperty.features.welcome.login.LoginScreen
+import com.homesoftwaretools.toptalproperty.features.welcome.register.RegisterActivity
+import com.homesoftwaretools.toptalproperty.features.welcome.signup.SignUpScreen
 import com.homesoftwaretools.toptalproperty.logd
 import java.util.*
 import kotlin.collections.HashMap
@@ -44,7 +46,9 @@ class AppNavigator(private val context: Context) : Navigator {
     private val routes by lazy {
         mapOf(
             Routes.WELCOME to ActivityRoute(WelcomeActivity::class, clearStack = true),
-            Routes.LOG_IN to FragmentRoute { LoginFragment() },
+            Routes.LOG_IN to FragmentRoute { LoginScreen() },
+            Routes.SIGN_UP to FragmentRoute { SignUpScreen() },
+            Routes.REGISTER to ActivityRoute(RegisterActivity::class, clearStack = true),
             Routes.DASHBOARD to ActivityRoute(DashboardActivity::class, clearStack = true),
             Routes.APARTMENT_EDITOR to ActivityRoute(ApartmentEditorActivity::class),
             Routes.APARTMENT_LIST to FragmentRoute(null) { ApartmentListScreen() },
@@ -89,6 +93,7 @@ class AppNavigator(private val context: Context) : Navigator {
     }
 
     override fun push(name: String, args: Map<String, String>, cached: Boolean) {
+        logd { "NAV:: Navigate to route $name with args: $args" }
         when (val route = routes[name.toLowerCase(Locale.getDefault())]) {
             is FragmentRoute -> push(target = getFragment(name, route, cached), args = args, stack = route.stack)
             is ActivityRoute -> startActivity(route, args)

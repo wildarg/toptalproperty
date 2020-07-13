@@ -12,8 +12,21 @@ class FirebaseAuthRepo : AuthRepo {
 
     private val auth = FirebaseAuth.getInstance()
 
-    override fun logIn(email: String, password: String): Completable = Completable.create { e ->
+    override fun logIn(email: String, password: String): Single<String> = Single.create { e ->
         auth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener { t ->
+                when {
+                    t.isSuccessful -> e.onSuccess(t.result?.user?.uid.orEmpty())
+                    else -> e.onError(t.exception ?: FirebaseException("Unknown Error"))
+                }
+            }
+            .addOnCanceledListener {
+                e.onError(UserCancelException())
+            }
+    }
+
+    override fun signUp(email: String, password: String): Completable = Completable.create { e ->
+        auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { t ->
                 when {
                     t.isSuccessful -> e.onComplete()
@@ -28,6 +41,12 @@ class FirebaseAuthRepo : AuthRepo {
     override fun currentAuthId(): Single<String> = Single.create { s ->
         auth.currentUser?.let {
             s.onSuccess(it.uid)
+        } ?: s.onError( UserNotLoggedIn() )
+    }
+
+    override fun currentUidAndEmail(): Single<Pair<String, String>> = Single.create { s ->
+        auth.currentUser?.let {
+            s.onSuccess(it.uid to it.email.orEmpty())
         } ?: s.onError( UserNotLoggedIn() )
     }
 

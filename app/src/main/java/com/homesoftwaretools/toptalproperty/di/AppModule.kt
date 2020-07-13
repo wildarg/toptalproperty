@@ -24,6 +24,12 @@ import com.homesoftwaretools.toptalproperty.features.welcome.WelcomeViewModel
 import com.homesoftwaretools.toptalproperty.features.welcome.login.LoginUseCase
 import com.homesoftwaretools.toptalproperty.features.welcome.login.LoginUseCaseImpl
 import com.homesoftwaretools.toptalproperty.features.welcome.login.LoginViewModel
+import com.homesoftwaretools.toptalproperty.features.welcome.register.RegisterUseCase
+import com.homesoftwaretools.toptalproperty.features.welcome.register.RegisterUseCaseImpl
+import com.homesoftwaretools.toptalproperty.features.welcome.register.RegisterViewModel
+import com.homesoftwaretools.toptalproperty.features.welcome.signup.SignUpUseCase
+import com.homesoftwaretools.toptalproperty.features.welcome.signup.SignUpUseCaseImpl
+import com.homesoftwaretools.toptalproperty.features.welcome.signup.SignUpViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -45,10 +51,14 @@ val appModule = module {
     viewModel { (id: String) -> ApartmentListViewModel(id) }
     viewModel { (id: String) -> DashboardViewModel(id) }
     viewModel { (id: String) -> FilterViewModel(id) }
+    viewModel { (id: String) -> SignUpViewModel(id) }
+    viewModel { (id: String) -> RegisterViewModel(id) }
 }
 
 val useCases = module {
-    factory<LoginUseCase> { LoginUseCaseImpl() }
+    factory<LoginUseCase> { LoginUseCaseImpl(authRepo = get(), userRepo = get()) }
+    factory<SignUpUseCase> { SignUpUseCaseImpl(authRepo = get()) }
+    factory<RegisterUseCase> { RegisterUseCaseImpl(authRepo = get(), userRepo = get()) }
     factory<SplashUseCase> { SplashUseCaseImpl(authRepo = get(), userRepo = get()) }
     factory<UserCardUseCase> { UserCardUseCaseImpl(authRepo = get(), userRepo = get()) }
     factory<ApartmentEditorUseCase> {

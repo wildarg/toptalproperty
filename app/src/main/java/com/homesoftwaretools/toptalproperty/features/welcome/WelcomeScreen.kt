@@ -20,6 +20,9 @@ class WelcomeFragment : BaseFragment() {
         view.findViewById<View>(R.id.login_button).onClick {
             vm.logIn()
         }
+        view.findViewById<View>(R.id.sign_up_button).onClick {
+            vm.signUp()
+        }
     }
 
 }
@@ -31,6 +34,12 @@ class WelcomeViewModel(scopeID: String) : BaseViewModel(scopeID) {
     fun logIn() {
         navigator.push(Routes.LOG_IN)
     }
+
+    fun signUp() {
+        navigator.push(Routes.SIGN_UP)
+    }
+
+
 
 }
 

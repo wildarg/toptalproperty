@@ -15,16 +15,36 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_map_api_key" />
-        <activity android:name=".features.splash.SplashScreen">
+        <activity android:name=".features.splash.SplashScreen"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".features.welcome.WelcomeActivity" />
-        <activity android:name=".features.dashboard.DashboardActivity"/>
-        <activity android:name=".features.editor.ApartmentEditorActivity"/>
+        <activity
+            android:name=".features.welcome.WelcomeActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation"
+            />
+        <activity
+            android:name=".features.dashboard.DashboardActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation"
+            />
+        <activity
+            android:name=".features.editor.ApartmentEditorActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation"
+            />
+        <activity
+            android:name=".features.welcome.register.RegisterActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation"
+            />
     </application>
 
 </manifest>

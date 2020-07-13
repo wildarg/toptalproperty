@@ -5,14 +5,19 @@
     <string name="log_in_action">Log In</string>
     <string name="sign_up_action">Sign Up</string>
     <string name="sign_out_action">Sign Out</string>
+    <string name="register_action">Register</string>
     <string name="email_label">E-Mail</string>
+    <string name="user_name_label">User Name</string>
     <string name="password_label">Password</string>
+    <string name="reenter_password_label">Re-enter Password</string>
     <string name="property_list_title">Property List</string>
     <string name="open_filter_drawer_content_description">Open filter preferences</string>
     <string name="list_tab">List</string>
     <string name="map_tab">Map</string>
     <string name="required_field_error">Required field</string>
+    <string name="different_password_error">The password is different</string>
     <string name="apartment_editor_title">Apartment</string>
+    <string name="register_new_user">Register New User</string>
 
     <string name="name_label">Name</string>
     <string name="description_label">Description</string>

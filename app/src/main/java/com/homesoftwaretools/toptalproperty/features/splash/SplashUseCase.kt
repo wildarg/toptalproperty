@@ -17,6 +17,5 @@ class SplashUseCaseImpl(
         authRepo.currentAuthId()
             .flatMap(userRepo::getUser)
             .map { true }
-            .onErrorReturnItem(false)
 
 }

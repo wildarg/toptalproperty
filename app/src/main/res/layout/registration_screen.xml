@@ -12,75 +12,87 @@
         android:background="@color/colorAccent"
         android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_small_logo_blue"
-            android:layout_gravity="center_horizontal|top"
-            android:layout_marginTop="32dp"
-            />
-
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:text="@string/app_full_name"
+            android:text="@string/register_new_user"
             style="@style/Text.H2"
             android:textColor="@color/colorPrimaryDark"
             android:gravity="center_horizontal"
             />
 
 
+        <RadioGroup
+            android:id="@+id/user_role"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="36dp"
+            >
+
+            <RadioButton
+                android:id="@+id/realtor_option"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/realtor_role_name"
+                android:checked="true"
+                android:buttonTint="@color/blue_01"
+                android:layout_margin="12dp"
+                />
+
+            <RadioButton
+                android:id="@+id/customer_option"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/customer_role_name"
+                android:buttonTint="@color/blue_01"
+                android:layout_margin="12dp"
+                />
+
+        </RadioGroup>
+
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/email_layout"
+            android:id="@+id/name_layout"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="64dp"
+            android:layout_marginTop="8dp"
             android:layout_marginStart="32dp"
             android:layout_marginEnd="32dp"
             android:layout_gravity="center_horizontal"
-            android:hint="@string/email_label"
+            android:hint="@string/user_name_label"
             app:errorEnabled="true"
             >
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/email_text"
+                android:id="@+id/name_editor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
                 />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/password_layout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
-            android:hint="@string/password_label"
-            android:layout_gravity="center_horizontal"
-            app:errorEnabled="true"
-            >
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/password_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                />
-        </com.google.android.material.textfield.TextInputLayout>
-
         <TextView
             style="@style/Button.SecondCta.White"
-            android:id="@+id/login_button"
+            android:id="@+id/register_button"
             android:layout_width="300dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="64dp"
+            android:layout_marginTop="42dp"
             android:layout_marginBottom="8dp"
-            android:text="@string/log_in_action"
+            android:text="@string/register_action"
+            />
+
+        <TextView
+            style="@style/Button.SecondCta.Stroke"
+            android:id="@+id/sign_out_button"
+            android:layout_width="300dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/sign_out_action"
             />
 
     </LinearLayout>

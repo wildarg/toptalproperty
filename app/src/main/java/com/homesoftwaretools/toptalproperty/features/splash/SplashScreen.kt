@@ -6,6 +6,8 @@ import com.homesoftwaretools.toptalproperty.core.navigator.Routes
 import com.homesoftwaretools.toptalproperty.core.ui.BaseActivity
 import com.homesoftwaretools.toptalproperty.core.ui.BaseFragment
 import com.homesoftwaretools.toptalproperty.core.ui.BaseViewModel
+import com.homesoftwaretools.toptalproperty.logd
+import com.homesoftwaretools.toptalproperty.repo.dao.UserNotFoundException
 import org.koin.core.inject
 import org.koin.core.scope.ScopeID
 
@@ -35,8 +37,11 @@ class SplashViewModel(scopeID: ScopeID) : BaseViewModel(scopeID) {
                     if (it) navigator.push(Routes.DASHBOARD)
                     else navigator.push(Routes.WELCOME)
                 },
-                onError = {
-                    navigator.push(Routes.WELCOME)
+                onError = { cause ->
+                    if (cause is UserNotFoundException)
+                        navigator.push(Routes.REGISTER)
+                    else
+                        navigator.push(Routes.WELCOME)
                 }
             )
     }

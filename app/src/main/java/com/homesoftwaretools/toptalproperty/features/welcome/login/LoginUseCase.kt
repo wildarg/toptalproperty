@@ -1,20 +1,23 @@
 package com.homesoftwaretools.toptalproperty.features.welcome.login
 
+import com.homesoftwaretools.toptalproperty.domain.User
 import com.homesoftwaretools.toptalproperty.repo.AuthRepo
+import com.homesoftwaretools.toptalproperty.repo.UserRepo
 import io.reactivex.Single
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
 interface LoginUseCase {
-    fun login(email: String, password: String): Single<String>
+    fun login(email: String, password: String): Single<User>
 }
 
-class LoginUseCaseImpl : LoginUseCase, KoinComponent {
+class LoginUseCaseImpl(
+    private val authRepo: AuthRepo,
+    private val userRepo: UserRepo
+) : LoginUseCase {
 
-    private val authRepo: AuthRepo by inject()
-
-    override fun login(email: String, password: String): Single<String> =
+    override fun login(email: String, password: String): Single<User> =
         authRepo.logIn(email, password)
-            .toSingle { "Unknown Route" }
+            .flatMap(userRepo::getUser)
 
 }
