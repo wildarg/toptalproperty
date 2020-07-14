@@ -33,7 +33,9 @@ class ApartmentEditorUseCaseImpl(
     override fun load(id: String): Single<Pair<Apartment, User>> =
         apartmentRepo.get(id)
             .flatMap { ap ->
-                userRepo.getUser(ap.realtorId!!).map { Pair(ap, it) }
+                userRepo.getUser(ap.realtorId!!)
+                    .onErrorReturnItem(User.EMPTY)
+                    .map { Pair(ap, it) }
             }
 
     override fun decodeAddress(address: String): Single<Location> =

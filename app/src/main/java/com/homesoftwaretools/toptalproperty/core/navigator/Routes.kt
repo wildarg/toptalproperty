@@ -11,5 +11,6 @@ interface Routes {
         const val APARTMENT_LIST = "/apartment_list"
         const val APARTMENT_MAP = "/apartment_map"
         const val USER_LIST = "/user_list"
+        const val USER_EDITOR = "/user_editor"
     }
 }

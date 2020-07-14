@@ -30,6 +30,7 @@ class ApartmentListUseCaseImpl(
         return Observable.fromIterable(list)
             .flatMapSingle { ap ->
                 userRepo.getUser(ap.realtorId!!)
+                    .onErrorReturnItem(User.EMPTY)
                     .map { Pair(ap, it) }
             }.toList()
 

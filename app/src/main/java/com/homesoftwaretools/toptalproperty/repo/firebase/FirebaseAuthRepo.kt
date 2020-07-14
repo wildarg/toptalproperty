@@ -25,11 +25,11 @@ class FirebaseAuthRepo : AuthRepo {
             }
     }
 
-    override fun signUp(email: String, password: String): Completable = Completable.create { e ->
+    override fun signUp(email: String, password: String): Single<String> = Single.create { e ->
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { t ->
                 when {
-                    t.isSuccessful -> e.onComplete()
+                    t.isSuccessful -> e.onSuccess(t.result?.user?.uid.orEmpty())
                     else -> e.onError(t.exception ?: FirebaseException("Unknown Error"))
                 }
             }

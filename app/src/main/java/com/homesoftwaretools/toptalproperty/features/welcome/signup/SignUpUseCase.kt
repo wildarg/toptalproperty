@@ -14,5 +14,6 @@ class SignUpUseCaseImpl(
 
     override fun signUp(email: String, password: String): Completable =
         authRepo.signUp(email, password)
+            .toCompletable()
 
 }

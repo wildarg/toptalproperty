@@ -30,4 +30,13 @@ data class User(
     val name: String,
     val email: String,
     val role: UserRole
-)
+) {
+    companion object {
+        val EMPTY = User(
+            authId = "",
+            name = "",
+            email = "",
+            role = UserRole.Client
+        )
+    }
+}

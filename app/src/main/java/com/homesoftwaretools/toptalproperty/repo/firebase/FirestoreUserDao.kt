@@ -50,7 +50,7 @@ class FireStoreUserDao(
 
     override fun save(user: User): Single<User> = Single.create { s ->
         val data = mapper.toMap(user)
-        val task: Task<*> = user.id?.let { id -> collection.document(id).set(data) }
+        val task: Task<*> = user.id?.let { id -> collection.document(id).update(data) }
             ?: collection.add(data)
         task.addOnSuccessListener {
                 if (it is DocumentReference?)

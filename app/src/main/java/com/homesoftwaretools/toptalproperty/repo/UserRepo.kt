@@ -12,6 +12,8 @@ interface UserRepo {
     fun getUser(authId: String): Single<User>
     fun getCurrentUser(): Single<User>
     fun registerUser(role: UserRole, name: String): Single<User>
+    fun registerUser(user: User): Single<User>
+    fun unregisterUser(authId: String): Single<User>
 }
 
 class UserRepoImpl(
@@ -40,5 +42,12 @@ class UserRepoImpl(
                 )
             }
             .flatMap(userDao::save)
+
+    override fun registerUser(user: User): Single<User> =
+        userDao.save(user)
+
+    override fun unregisterUser(authId: String): Single<User> =
+        userDao.get(authId)
+            .flatMap(userDao::delete)
 
 }
