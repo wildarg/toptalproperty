@@ -7,6 +7,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.homesoftwaretools.toptalproperty.domain.User
 import com.homesoftwaretools.toptalproperty.repo.dao.UserDao
 import com.homesoftwaretools.toptalproperty.repo.dao.UserNotFoundException
+import io.reactivex.Observable
 import io.reactivex.Single
 
 class FireStoreUserDao(
@@ -21,14 +22,16 @@ class FireStoreUserDao(
         doc?.data?.apply { put(ID, doc.id) }
             ?.let(mapper::fromMap)
 
-    override fun getAll(): Single<List<User>> = Single.create { s ->
-        collection.get()
-            .addOnSuccessListener { snapshot ->
-                val list = snapshot.documents
-                    .mapNotNull(this::toUser)
-                s.onSuccess(list)
+    override fun getAll(): Observable<List<User>> = Observable.create { o ->
+        collection
+            .addSnapshotListener { snapshot, e ->
+                when {
+                    e != null   -> o.onError(e)
+                    snapshot != null    -> snapshot.documents
+                        .mapNotNull(this::toUser)
+                        .let(o::onNext)
+                }
             }
-            .addOnFailureListener(s::onError)
     }
 
     override fun get(authId: String): Single<User> = Single.create { s ->

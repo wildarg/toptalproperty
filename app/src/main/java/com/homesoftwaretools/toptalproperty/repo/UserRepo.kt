@@ -4,9 +4,11 @@ import com.homesoftwaretools.toptalproperty.domain.User
 import com.homesoftwaretools.toptalproperty.domain.UserRole
 import com.homesoftwaretools.toptalproperty.repo.dao.UserDao
 import io.reactivex.Completable
+import io.reactivex.Observable
 import io.reactivex.Single
 
 interface UserRepo {
+    fun getAll(): Observable<List<User>>
     fun getUser(authId: String): Single<User>
     fun getCurrentUser(): Single<User>
     fun registerUser(role: UserRole, name: String): Single<User>
@@ -16,6 +18,9 @@ class UserRepoImpl(
     private val userDao: UserDao,
     private val authRepo: AuthRepo
 ) : UserRepo {
+
+    override fun getAll(): Observable<List<User>> =
+        userDao.getAll()
 
     override fun getUser(authId: String): Single<User> =
         userDao.get(authId)

@@ -19,6 +19,9 @@ import com.homesoftwaretools.toptalproperty.features.splash.SplashViewModel
 import com.homesoftwaretools.toptalproperty.features.usercard.UserCardUseCase
 import com.homesoftwaretools.toptalproperty.features.usercard.UserCardUseCaseImpl
 import com.homesoftwaretools.toptalproperty.features.usercard.UserCardViewModel
+import com.homesoftwaretools.toptalproperty.features.userlist.UserListUseCase
+import com.homesoftwaretools.toptalproperty.features.userlist.UserListUseCaseImpl
+import com.homesoftwaretools.toptalproperty.features.userlist.UserListViewModel
 import com.homesoftwaretools.toptalproperty.features.welcome.WelcomeActivity
 import com.homesoftwaretools.toptalproperty.features.welcome.WelcomeViewModel
 import com.homesoftwaretools.toptalproperty.features.welcome.login.LoginUseCase
@@ -53,6 +56,7 @@ val appModule = module {
     viewModel { (id: String) -> FilterViewModel(id) }
     viewModel { (id: String) -> SignUpViewModel(id) }
     viewModel { (id: String) -> RegisterViewModel(id) }
+    viewModel { (id: String) -> UserListViewModel(id) }
 }
 
 val useCases = module {
@@ -61,6 +65,7 @@ val useCases = module {
     factory<RegisterUseCase> { RegisterUseCaseImpl(authRepo = get(), userRepo = get()) }
     factory<SplashUseCase> { SplashUseCaseImpl(authRepo = get(), userRepo = get()) }
     factory<UserCardUseCase> { UserCardUseCaseImpl(authRepo = get(), userRepo = get()) }
+    factory<UserListUseCase> { UserListUseCaseImpl(userRepo = get()) }
     factory<ApartmentEditorUseCase> {
         ApartmentEditorUseCaseImpl(
             apartmentRepo = get(),

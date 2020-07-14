@@ -16,6 +16,7 @@ import com.homesoftwaretools.toptalproperty.features.dashboard.DashboardActivity
 import com.homesoftwaretools.toptalproperty.features.dashboard.apartmentlist.ApartmentListScreen
 import com.homesoftwaretools.toptalproperty.features.dashboard.map.ApartmentMapScreen
 import com.homesoftwaretools.toptalproperty.features.editor.ApartmentEditorActivity
+import com.homesoftwaretools.toptalproperty.features.userlist.UserListScreen
 import com.homesoftwaretools.toptalproperty.features.welcome.WelcomeActivity
 import com.homesoftwaretools.toptalproperty.features.welcome.login.LoginScreen
 import com.homesoftwaretools.toptalproperty.features.welcome.register.RegisterActivity
@@ -52,7 +53,8 @@ class AppNavigator(private val context: Context) : Navigator {
             Routes.DASHBOARD to ActivityRoute(DashboardActivity::class, clearStack = true),
             Routes.APARTMENT_EDITOR to ActivityRoute(ApartmentEditorActivity::class),
             Routes.APARTMENT_LIST to FragmentRoute(null) { ApartmentListScreen() },
-            Routes.APARTMENT_MAP to FragmentRoute(null) { ApartmentMapScreen() }
+            Routes.APARTMENT_MAP to FragmentRoute(null) { ApartmentMapScreen() },
+            Routes.USER_LIST to FragmentRoute(null) { UserListScreen() }
         )
     }
 

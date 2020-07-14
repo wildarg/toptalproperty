@@ -41,7 +41,7 @@ class LoginScreen : BaseFragment() {
 
     private fun checkArgs() {
         args("email")?.takeIf { it.isNotBlank() }
-            .let {
+            ?.let {
                 email.setText(it)
                 password.requestFocus()
             }

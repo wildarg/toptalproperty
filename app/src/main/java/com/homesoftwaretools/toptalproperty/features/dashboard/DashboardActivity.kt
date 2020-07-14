@@ -53,6 +53,7 @@ class DashboardActivity : BaseScaffoldActivity() {
         when (item.itemId) {
             R.id.list_page  -> vm.openList()
             R.id.map_page   -> vm.openMap()
+            R.id.users_page -> vm.openUsers()
         }
         return true
     }
@@ -83,6 +84,11 @@ class DashboardViewModel(scopeId: String) : BaseViewModel(scopeId) {
 
     fun openMap() {
         navigator.push(Routes.APARTMENT_MAP)
+        navigator.hideFab()
+    }
+
+    fun openUsers() {
+        navigator.push(Routes.USER_LIST)
         navigator.hideFab()
     }
 

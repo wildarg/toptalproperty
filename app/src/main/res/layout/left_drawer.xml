@@ -10,7 +10,7 @@
         android:name="com.homesoftwaretools.toptalproperty.features.usercard.UserCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:layout="@layout/user_card"
+        tools:layout="@layout/user_layout"
         />
 
     <fragment
