@@ -1,9 +1,16 @@
 package com.homesoftwaretools.toptalproperty.domain
 
-sealed class UserRole(val type: Int) {
-    object Admin : UserRole(0)
-    object Realtor : UserRole(1)
-    object Client : UserRole(2)
+sealed class UserRole(val type: Int, val isCrudApartmentAllowed: Boolean = true) {
+    object Admin : UserRole(
+        type = 0
+    )
+    object Realtor : UserRole(
+        type = 1
+    )
+    object Client : UserRole(
+        type = 2,
+        isCrudApartmentAllowed = false
+    )
 
     companion object {
         fun getRole(type: Int): UserRole {

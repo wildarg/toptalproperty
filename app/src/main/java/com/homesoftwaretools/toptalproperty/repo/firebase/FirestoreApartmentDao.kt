@@ -43,10 +43,7 @@ class FireStoreApartmentDao(
                     snapshot != null -> o.onNext(snapshot.documents.mapNotNull(this::toApartment))
                 }
             }
-        o.setCancellable {
-            logd { "WILD:: remove listener" }
-            listener.remove()
-        }
+        o.setCancellable { listener.remove() }
     }
 
     override fun save(apartment: Apartment): Single<Apartment> = Single.create { s ->

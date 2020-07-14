@@ -10,4 +10,9 @@
         android:enabled="true"
         android:icon="@drawable/ic_map_24px"
         android:title="@string/map_tab"/>
+    <item
+        android:id="@+id/users_page"
+        android:enabled="true"
+        android:icon="@drawable/ic_people_24px"
+        android:title="@string/users_tab"/>
 </menu>

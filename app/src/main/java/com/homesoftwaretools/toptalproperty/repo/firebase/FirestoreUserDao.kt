@@ -23,7 +23,7 @@ class FireStoreUserDao(
             ?.let(mapper::fromMap)
 
     override fun getAll(): Observable<List<User>> = Observable.create { o ->
-        collection
+        val listener = collection
             .addSnapshotListener { snapshot, e ->
                 when {
                     e != null   -> o.onError(e)
@@ -32,6 +32,7 @@ class FireStoreUserDao(
                         .let(o::onNext)
                 }
             }
+        o.setCancellable { listener.remove() }
     }
 
     override fun get(authId: String): Single<User> = Single.create { s ->

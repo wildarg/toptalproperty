@@ -37,16 +37,13 @@ class DashboardActivity : BaseScaffoldActivity() {
     }
 
     private fun onUserUpdate(user: User) {
-
+        if (user.role == UserRole.Admin)
+            inflateBottomMenu(R.menu.dashboard_nav_admin_menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         openDrawer()
         return true
-    }
-
-    override fun onFabClick(view: View) {
-        vm.createApartment()
     }
 
     override fun onBottomItemSelect(item: MenuItem): Boolean {
@@ -70,37 +67,21 @@ class DashboardViewModel(scopeId: String) : BaseViewModel(scopeId) {
     init {
         userRepo.getCurrentUser()
             .bindSubscribe(
-                onSuccess = {
-                    (currentUser as MutableLiveData).postValue(it)
-                    checkFab(it)
-                },
+                onSuccess = (currentUser as MutableLiveData)::postValue,
                 onError = toaster::showError
             )
     }
 
-    fun createApartment() {
-        navigator.push(Routes.APARTMENT_EDITOR)
-    }
-
     fun openMap() {
         navigator.push(Routes.APARTMENT_MAP)
-        navigator.hideFab()
     }
 
     fun openUsers() {
         navigator.push(Routes.USER_LIST)
-        navigator.hideFab()
     }
 
     fun openList() {
         navigator.push(Routes.APARTMENT_LIST)
-        checkFab(currentUser.value)
-    }
-
-    private fun checkFab(user: User?) {
-        user?.apply {
-            if (role != UserRole.Client) navigator.showFab()
-        }
     }
 
 }

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.annotation.MenuRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -66,7 +67,6 @@ abstract class BaseScaffoldActivity : BaseActivity() {
     private val toolbar by lazy { findViewById<MaterialToolbar>(R.id.toolbar) }
     private val drawer by lazy { findViewById<DrawerLayout>(R.id.drawer) }
     private val bottom by lazy { findViewById<BottomNavigationView>(R.id.bottom_navigation) }
-    private val fab by lazy { findViewById<FloatingActionButton>(R.id.fab) }
 
     override val layoutId = R.layout.scaffold_container
     abstract val titleResId: Int
@@ -81,12 +81,9 @@ abstract class BaseScaffoldActivity : BaseActivity() {
         supportActionBar?.apply {
             title = getString(titleResId)
         }
-        bottom.inflateMenu(bottomMenuResId)
+        inflateBottomMenu(bottomMenuResId)
         bottom.setOnNavigationItemSelectedListener(this::onBottomItemSelect)
-        fab.setOnClickListener(this::onFabClick)
     }
-
-    protected open fun onFabClick(view: View) { }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(menuResId, menu)
@@ -109,11 +106,8 @@ abstract class BaseScaffoldActivity : BaseActivity() {
         return true
     }
 
-    fun hideFab() {
-        fab.visible = false
-    }
-
-    fun showFab() {
-        fab.visible = true
+    protected fun inflateBottomMenu(@MenuRes menuId: Int) {
+        bottom.menu.clear()
+        bottom.inflateMenu(menuId)
     }
 }

@@ -33,8 +33,6 @@ interface Navigator {
     fun popBack()
     fun pushLoader()
     fun hideLoader()
-    fun showFab()
-    fun hideFab()
     fun openDrawer()
     fun hideDrawer()
     fun hideSoftKeyboard(view: View)
@@ -117,14 +115,6 @@ class AppNavigator(private val context: Context) : Navigator {
     override fun hideLoader() {
         val mgr = (context as? BaseActivity)?.supportFragmentManager ?: return
         mgr.popBackStack("loader", FragmentManager.POP_BACK_STACK_INCLUSIVE)
-    }
-
-    override fun showFab() {
-        (context as? BaseScaffoldActivity)?.showFab()
-    }
-
-    override fun hideFab() {
-        (context as? BaseScaffoldActivity)?.hideFab()
     }
 
     override fun openDrawer() {
