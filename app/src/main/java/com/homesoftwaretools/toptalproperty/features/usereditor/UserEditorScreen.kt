@@ -92,7 +92,11 @@ class UserEditorScreen : BaseFragment() {
         authId = authId.orEmpty(),
         name = nameEditor.text.toString(),
         email = emailEditor.text.toString(),
-        role = if (realtorOption.isChecked) UserRole.Realtor else UserRole.Client
+        role = when {
+            realtorOption.isChecked -> UserRole.Realtor
+            customerOption.isChecked -> UserRole.Client
+            else    -> UserRole.Admin
+        }
     )
 
 }
